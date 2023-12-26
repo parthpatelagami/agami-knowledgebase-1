@@ -1,11 +1,46 @@
 
 
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {TextFormatting} from './partials/TextFormatting'
 import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
+import axios from "axios"
+
+interface Product {
+  id: number;
+  product_name: string;
+}
+
+const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+
 
 const Ask: React.FC = () => {
-  const [textFormatting, setTextFormatting] = useState<boolean>(false)
+  const [textFormatting, setTextFormatting] = useState<boolean>(false);
+  const [products, setProducts] = useState<Product[]>([]);
+
+
+  useEffect(() => {
+    async function fetchProducts() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/products`, {
+        headers: {
+            'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+            'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+        }
+    })
+      .then(function (response: any) {
+        console.log(response);
+        if(response.status == 200) {
+          setProducts(response.data.products)
+        }
+      })
+      .catch(function (error: any) {
+        console.log(error);
+      })
+      .finally(function () {
+      });
+    }
+    fetchProducts();
+  }, []);
 
   return (
     <EnableSidebar>
@@ -68,9 +103,12 @@ const Ask: React.FC = () => {
             data-placeholder='Select a product'
             name='product'
           >
-            <option value='1'>Intalk</option>
-            <option value='2'>HelpInBox</option>   
-            <option value='3'>ChatInBox</option>                       
+            {products.map(product => (
+            <option value={product.id}>
+              {product.product_name}
+            </option>
+          ))}
+      {JSON.stringify(products)}                
           </select>
         </div>
 
