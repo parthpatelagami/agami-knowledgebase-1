@@ -121,7 +121,7 @@ export function MenuInner() {
           menuPlacement='right-start'
           menuTrigger={`{default:'click', lg: 'hover'}`}
         >
-          <MenuItem to='/apps/devs/question' title='Question' hasBullet={true} />
+          <MenuItem to='/apps/devs/questions' title='Question' hasBullet={true} />
           <MenuItem to='/apps/devs/tag' title='Tag' hasBullet={true} />
           <MenuItem to='/apps/devs/search' title='Search' hasBullet={true} />
           <MenuItem to='/apps/devs/ask' title='Ask' hasBullet={true} />

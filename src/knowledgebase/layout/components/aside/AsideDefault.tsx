@@ -72,7 +72,7 @@ const AsideDefault: FC = () => {
           </div>
 
           <div className='menu-item'>
-            <Link to='/apps/devs/question' className='menu-link'>
+            <Link to='/apps/devs/questions' className='menu-link'>
               <span className='menu-title'>My Questions</span>
               <span className='menu-badge'>24</span>
             </Link>

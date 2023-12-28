@@ -4,6 +4,7 @@ import {Ask} from './components/Ask'
 import {Question} from './components/Question'
 import {Search} from './components/Search'
 import {Tag} from './components/Tag'
+import { Questions } from './components/partials/Questions'
 
 const devBreadCrumbs: Array<PageLink> = [
   {
@@ -34,11 +35,20 @@ const DevPage = () => {
           }
         />
         <Route
+          path='questions'
+          element={
+            <>
+              <PageTitle breadcrumbs={devBreadCrumbs}>Group chat</PageTitle>
+              <Questions type="user"/>
+            </>
+          }
+        />
+        <Route
           path='question'
           element={
             <>
               <PageTitle breadcrumbs={devBreadCrumbs}>Group chat</PageTitle>
-              <Question />
+              <Question/>
             </>
           }
         />
@@ -60,7 +70,7 @@ const DevPage = () => {
             </>
           }
         />
-        <Route index element={<Navigate to='/apps/devs/question' />} />
+        <Route index element={<Navigate to='/apps/devs/questions' />} />
       </Route>
     </Routes>
   )

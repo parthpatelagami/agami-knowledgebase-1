@@ -10,7 +10,7 @@ const DashboardWrapper: FC = () => {
       <PageTitle description='You’ve got 24 New Sales' breadcrumbs={[]}>
         Hello, Paul
       </PageTitle>
-      <Questions />
+      <Questions type="all"/>
     </EnableSidebar>
   )
 }

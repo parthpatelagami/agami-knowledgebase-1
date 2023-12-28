@@ -26,7 +26,7 @@ const SidebarLatestArticles: FC = () => {
               <KTIcon iconName='right-square' className='fs-2 mt-0 me-2' />
 
               <Link
-                to='/apps/devs/question'
+                to='/apps/devs/questions'
                 className='text-gray-700 text-hover-primary fs-6 fw-bold'
               >
                 {item}

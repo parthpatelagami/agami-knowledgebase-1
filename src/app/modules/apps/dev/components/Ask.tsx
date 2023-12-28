@@ -6,11 +6,14 @@ import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
 import axios from "axios"
 import { useFormik } from 'formik'
 import { questionSchema } from '../../../../../knowledgebase/schemas'
+import { useNavigate } from 'react-router-dom'
+import { _steppedLineTo } from 'chart.js/helpers'
 
 interface Product {
   id: number;
   product_name: string;
 }
+
 
 const REACT_APP_API_URL =
   import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
@@ -20,6 +23,8 @@ const Ask: React.FC = () => {
   const [textFormatting, setTextFormatting] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -33,6 +38,7 @@ const Ask: React.FC = () => {
       .then(function (response: any) {
         console.log(response);
         if(response.status == 200) {
+          console.log(response)
           setProducts(response.data.products)
         }
       })
@@ -78,7 +84,7 @@ const Ask: React.FC = () => {
       tags: tags,
       modified_by:1,
       created_by:1,
-      company_id:35
+      company_id:1
     }, {
       headers: {
         'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
@@ -90,15 +96,26 @@ const Ask: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 1000)
-      alert('Account has been successfully deleted!')
+      navigate('/dashboard')
+      alert('Question Added Successfully')
     })
     .catch(error => {
       console.error(error);
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+      navigate('/apps/devs/ask')
+      alert('ERROR, Please try again')
     });
   }
 
   return (
     <EnableSidebar>
+          {/* <div className="toastr toastr-success toastr-top-center">
+    <button className="toastr-close-button"></button>
+    <div className="toastr-title">Info Toast</div>
+    <div className="toastr-message">This is an example of an info toast message.</div>
+</div> */}
       <form className="form" onSubmit={handleSubmit}>
         <div className="d-flex flex-column mb-8 fv-row">
           <label className="d-flex align-items-center mb-2">
@@ -201,10 +218,6 @@ const Ask: React.FC = () => {
             onBlur={handleBlur}
           />
           {/* <TagifySelectExample /> */}
-          {/* <span className='indicator-progress' style={{display: 'block'}}>
-                  Please wait...{' '}
-                  <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                </span> */}
         </div>
 
         <div className="d-flex flex-stack">
@@ -230,13 +243,17 @@ const Ask: React.FC = () => {
               />
             </span>
           </label>
-          {loading && (
+          <div className='card-footer d-flex justify-content-end py-6 px-9'>
+            <button type='submit' className='btn btn-primary' disabled={loading}>
+              {!loading && 'Save Changes'}
+              {loading && (
                 <span className='indicator-progress' style={{display: 'block'}}>
                   Please wait...{' '}
                   <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
                 </span>
               )}
-          <button className="btn btn-primary">Submit</button>
+            </button>
+          </div>
         </div>
       </form>
     </EnableSidebar>

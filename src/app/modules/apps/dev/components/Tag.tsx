@@ -7,7 +7,7 @@ import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
 const Tag: React.FC = () => {
   return (
     <EnableSidebar>
-      <Questions />
+      <Questions type="all"/>
     </EnableSidebar>
   )
 }

@@ -1,11 +1,20 @@
 
 
-import {FC, Fragment} from 'react'
+import {FC, Fragment,useEffect,useState} from 'react'
 import {Link} from 'react-router-dom'
 import {KTIcon, toAbsoluteUrl} from '../../../../../../knowledgebase/helpers'
+import axios from "axios"
 
-const Questions: FC = () => {
-  const questions = [
+interface QuestionsProps {
+  type: string;
+}
+
+
+const Questions: FC<QuestionsProps> = (props) => {
+  const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  const [questions, setQuestions] = useState<any>([]);
+  const questions1 = [
     {
       title: 'How to use Metronic with Django Framework ?',
       summary:
@@ -121,10 +130,130 @@ const Questions: FC = () => {
     },
   ]
 
+  useEffect(() => {
+    async function fetchAllQuestions() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions`, {
+          headers: {
+              'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+              'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+          }
+      })
+        .then(function (response: any) {
+          console.log(response);
+          if(response.status == 200) {
+            console.log(response.data)
+             setQuestions(response.data.data)
+          }
+        })
+        .catch(function (error: any) {
+          console.log(error);
+        })
+        .finally(function () {
+        });
+      }
+
+      async function fetchQuestionsByUser() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/users/1`, {
+          headers: {
+              'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+              'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+          }
+      })
+        .then(function (response: any) {
+          console.log(response);
+          if(response.status == 200) {
+            console.log(response.data)
+             setQuestions(response.data.data)
+          }
+        })
+        .catch(function (error: any) {
+          console.log(error);
+        })
+        .finally(function () {
+        });
+      }
+        
+      if(props.type === "all") {
+        fetchAllQuestions();
+      }
+      else if(props.type === "user") {
+        fetchQuestionsByUser();
+      }
+  }, []);
+
   return (
     <>
+    <div className='mb-10'>
+        {questions.map((item:any, i:number) => {
+          console.log(item)
+          return (
+            <Fragment key={`question_${i}`}>
+              <div className='mb-0'>
+                <div className='d-flex align-items-center mb-4'>
+                  <Link
+                    to='/apps/devs/question'
+                    className='fs-2 fw-bolder text-gray-900 text-hover-primary me-1'
+                  >
+                    {item.title}
+                  </Link>
+                  <div className='d-flex align-items-center'>
+                    {/* {item.icons.map((icon, j) => {
+                      return (
+                        <span className='ms-1' key={`icons_${j}`}>
+                          <KTIcon className={`fs-1 ${icon.class}`} iconName={icon.path} />
+                        </span>
+                      )
+                    })} */}
+                  </div>
+                </div>
+                <div className='fs-base fw-normal text-gray-700 mb-4'>{item.description}</div>
+
+                <div className='d-flex flex-stack flex-wrap'>
+                  <div className='d-flex align-items-center py-1'>
+                    <div className='symbol symbol-35px me-2'>
+                      {item.avatar && <img src={toAbsoluteUrl(item.avatar)} alt='user' />}
+                      {!item.avatar && (
+                        <div className='symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase'>
+                          {item.createdBy.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className='d-flex flex-column align-items-start justify-content-center'>
+                      <span className='text-gray-900 fs-7 fw-bold lh-1 mb-2'>{item.createdBy.name}</span>
+                      {new Date(item.created_date).toLocaleString()}
+                      </div>
+                  </div>
+
+                  <div className='d-flex align-items-center py-1'>
+                    <Link
+                      to='/apps/devs/question'
+                      className='btn btn-sm btn-outline btn-outline-dashed btn-outline-default px-4 me-2'
+                    >
+                      {item.answers} Answers
+                    </Link>
+
+                    {/* {item.tags.map((tag:any, j:any) => {
+                      return (
+                        <Link
+                          to='/apps/devs/tag'
+                          className='btn btn-sm btn-light px-4 me-2'
+                          key={`link_${j}`}
+                        >
+                          {tag}
+                        </Link>
+                      )
+                    })} */}
+                  </div>
+                </div>
+              </div>
+              <div className='separator separator-dashed border-gray-300 my-8'></div>
+                </Fragment>
+          )
+        })}
+        </div>
       <div className='mb-10'>
-        {questions.map((item, i) => {
+        {questions1.map((item, i) => {
           return (
             <Fragment key={`question_${i}`}>
               <div className='mb-0'>

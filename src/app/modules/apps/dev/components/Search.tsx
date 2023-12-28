@@ -25,7 +25,7 @@ const Search: React.FC = () => {
 
       <div className='separator separator-dashed border-gray-300 my-6'></div>
 
-      <Questions />
+      <Questions type="all"/>
     </EnableSidebar>
   )
 }
