@@ -5,6 +5,8 @@ import {Question} from './components/Question'
 import {Search} from './components/Search'
 import {Tag} from './components/Tag'
 import { Questions } from './components/partials/Questions'
+import { Article } from './components/AddArticle'
+import { Articles } from './components/Article'
 
 const devBreadCrumbs: Array<PageLink> = [
   {
@@ -31,6 +33,24 @@ const DevPage = () => {
             <>
               <PageTitle breadcrumbs={devBreadCrumbs}>Private chat</PageTitle>
               <Ask />
+            </>
+          }
+        />
+        <Route
+          path='article'
+          element={
+            <>
+              <PageTitle breadcrumbs={devBreadCrumbs}>Private chat</PageTitle>
+              <Article />
+            </>
+          }
+        />
+        <Route
+          path='myarticle'
+          element={
+            <>
+              <PageTitle breadcrumbs={devBreadCrumbs}>Private chat</PageTitle>
+              <Articles />
             </>
           }
         />

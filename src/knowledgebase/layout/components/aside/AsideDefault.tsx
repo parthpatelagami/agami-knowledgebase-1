@@ -62,6 +62,11 @@ const AsideDefault: FC = () => {
               <span className='menu-title'>Ask Question</span>
             </NavLink>
           </div>
+          <div className='menu-item'>
+            <NavLink to='/apps/devs/article' className='menu-link'>
+              <span className='menu-title'>Add Articles</span>
+            </NavLink>
+          </div>
 
           <div className='menu-item pt-5'>
             <div className='menu-content pb-2'>
@@ -74,6 +79,12 @@ const AsideDefault: FC = () => {
           <div className='menu-item'>
             <Link to='/apps/devs/questions' className='menu-link'>
               <span className='menu-title'>My Questions</span>
+              <span className='menu-badge'>24</span>
+            </Link>
+          </div>
+          <div className='menu-item'>
+            <Link to='/apps/devs/myarticle' className='menu-link'>
+              <span className='menu-title'>My Articles</span>
               <span className='menu-badge'>24</span>
             </Link>
           </div>
