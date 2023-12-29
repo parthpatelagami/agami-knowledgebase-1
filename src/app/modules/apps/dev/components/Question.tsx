@@ -1,20 +1,57 @@
 
 
-import React, {useState} from 'react'
-import {KTIcon} from '../../../../../knowledgebase/helpers'
+import React, {useState,useEffect} from 'react'
+import {KTIcon,toAbsoluteUrl} from '../../../../../knowledgebase/helpers'
 import {TextFormatting} from './partials/TextFormatting'
 import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
 import {Replies} from './partials/Replies'
+import axios from "axios"
+import { useParams } from 'react-router-dom';
+
 
 const Question: React.FC = () => {
+
+  const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  const { id } = useParams();
+  const [question, setQuestion] = useState<any>([]);
+
+  useEffect(() => {
+    async function fetchQuesitonById() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/${id}`, {
+          headers: {
+              'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+              'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+          }
+      })
+        .then(function (response: any) {
+          console.log(response);
+          if(response.status == 200) {
+            console.log(response.data.data)
+            setQuestion(response.data.data)
+          }
+        })
+        .catch(function (error: any) {
+          console.log(error);
+        })
+        .finally(function () {
+        });
+      }
+
+      fetchQuesitonById();
+      console.log("Hello Question");
+  }, []);
+
+
   const [textFormatting, setTextFormatting] = useState<boolean>(false)
 
   return (
-    <EnableSidebar>
+    question && (
+      <EnableSidebar>
       <div className='mb-0'>
         <div className='d-flex align-items-center mb-9'>
           <h1 className='fs-2x fw-bolder text-gray-900 mb-0 me-1'>
-            How to use Metronic with Laravel Framework ?
+            {question.title}
           </h1>
 
           <div className='d-flex align-items-center'>
@@ -25,36 +62,31 @@ const Question: React.FC = () => {
         </div>
 
         <div className='fs-4 fw-normal text-gray-800 mb-10'>
-          <p>Hi Keenthemes,</p>
-
-          <p>
-            I’ve been doing some ajax request, to populate a inside drawer, the content of that
-            drawer has a sub menu, that you are using in list and all card toolbar.
-          </p>
-
-          <p>
-            But they are not displaying, since it is an ajax, I tried “KTApp.init();” but didn’t
-            work (worked for Tooltips sure, but not Menu).
-          </p>
-
-          <p>Anyway to Re-init those https://ibb.co/gysPGpx Menu. ?</p>
-
-          <p>Thank you.</p>
+         <p>{question.description}</p>
         </div>
 
         <div className='d-flex flex-stack flex-wrap'>
-          <div className='d-flex align-items-center py-1'>
-            <div className='symbol symbol-35px me-2'>
-              <div className='symbol-label bg-light-success fs-3 fw-bold text-success text-uppercase'>
-                j
-              </div>
-            </div>
+        <div className="d-flex align-items-center py-1">
+                    <div className="symbol symbol-35px me-2">
+                      {question.avatar && (
+                        <img src={toAbsoluteUrl(question.avatar)} alt="user" />
+                      )}
+                      {!question.avatar && (
+                        <div className="symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase">
+                          {/* {question.createdBy.name.charAt(0)} */}
+                          {question.createdBy?question.createdBy.name.charAt(0):"A"}
+                        </div>
+                      )}
+                    </div>
 
-            <div className='d-flex flex-column align-items-start justify-content-center'>
-              <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>James Hunt</span>
-              <span className='text-muted fs-8 fw-bold lh-1'>24 minutes ago</span>
-            </div>
-          </div>
+                    <div className="d-flex flex-column align-items-start justify-content-center">
+                      <span className="text-gray-900 fs-7 fw-bold lh-1 mb-2">
+                        {/* {question.createdBy.name} */}
+                        {question.createdBy?question.createdBy.name:"User"}
+                      </span>
+                      {new Date(question.created_date).toLocaleString()}
+                    </div>
+                  </div>
 
           <div className='d-flex align-items-center py-1'>
             <a
@@ -103,9 +135,7 @@ const Question: React.FC = () => {
         </div>
       </div>
 
-      <div className='separator separator-dashed border-gray-300 mt-8 mb-10'></div>
-
-      <form id='kt_devs_reply_form' className='form mb-10'>
+      {/* <form id='kt_devs_reply_form' className='form mb-10'>
         <div className='form-group mb-2'>
           <textarea
             name='comment'
@@ -134,9 +164,8 @@ const Question: React.FC = () => {
 
         {textFormatting && <TextFormatting />}
       </form>
-      <Replies />
-    </EnableSidebar>
-  )
+      <Replies /> */}
+    </EnableSidebar>));
 }
 
 export {Question}

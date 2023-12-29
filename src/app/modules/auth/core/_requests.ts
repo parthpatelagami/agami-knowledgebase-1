@@ -2,6 +2,8 @@ import axios from "axios";
 import { AuthModel, UserModel } from "./_models";
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
+const REACT_APP_API_URL =
+import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
 
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/verify_token`;
 export const LOGIN_URL = `${API_URL}/login`;
@@ -20,16 +22,24 @@ export function login(email: string, password: string) {
 export function register(
   email: string,
   firstname: string,
-  lastname: string,
   password: string,
-  password_confirmation: string
+  password_confirmation: string,
+  otp:string
 ) {
-  return axios.post(REGISTER_URL, {
+  return axios.post(`${REACT_APP_API_URL}/knowledgebase/register`, {
     email,
-    first_name: firstname,
-    last_name: lastname,
+    name: firstname,
     password,
-    password_confirmation,
+    otp,
+    companyId:1,
+  });
+}
+
+export function generateOTP(
+  email: string,
+) {
+  return axios.post(`${REACT_APP_API_URL}/knowledgebase/generateotp`, {
+    email,
   });
 }
 

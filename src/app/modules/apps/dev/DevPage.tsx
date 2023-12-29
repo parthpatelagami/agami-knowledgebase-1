@@ -64,7 +64,7 @@ const DevPage = () => {
           }
         />
         <Route
-          path='question'
+          path='question/:id'
           element={
             <>
               <PageTitle breadcrumbs={devBreadCrumbs}>Group chat</PageTitle>

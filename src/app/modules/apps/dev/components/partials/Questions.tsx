@@ -56,78 +56,6 @@ const Questions: FC<QuestionsProps> = (props) => {
       ],
       tags: ['Pre-sale'],
     },
-    {
-      title: 'Could not get Demo 7 working',
-      summary:
-        'could not get demo7 working from latest metronic version. Had a lot of issues installing, I had to downgrade my npm to 6.14.4 as someone else recommended here in the comments, this goot it to compile but when I ran it, the browser showed errors TypeErr..',
-      author: 'Niko Roseberg',
-      date: '2 days ago',
-
-      answers: '4',
-      upvotes: '',
-      icons: [
-        {
-          path: 'information-5',
-          class: 'text-warning',
-          tooltip: 'In-process',
-        },
-      ],
-      tags: ['Angular'],
-    },
-    {
-      title: 'I want to get refund',
-      summary:
-        'Your Metronic theme is so good but the reactjs version is typescript only. The description did not write any warn about it. Since I only know javascript, I can not do anything with your theme. I want to refund.',
-      author: 'Alex Bold',
-      date: '1 day ago',
-      avatar: 'media/avatars/300-23.jpg',
-      answers: '22',
-      upvotes: '11',
-      icons: [
-        {
-          path: 'check-circle',
-          class: 'text-success',
-          tooltip: 'Resolved',
-        },
-      ],
-      tags: ['React', 'Demo 1'],
-    },
-    {
-      title: 'How to integrate Metronic with Blazor Server Side ?',
-      summary:
-        'could not get demo7 working from latest metronic version. Had a lot of issues installing, I had to downgrade my npm to 6.14.4 as someone else recommended here in the comments, this goot it to compile but when I ran it, the browser showed errors TypeErr..',
-      author: 'Tim Nilson',
-      date: '3 days ago',
-
-      answers: '44',
-      upvotes: '3',
-      icons: [
-        {
-          path: 'check-circle',
-          class: 'text-success',
-          tooltip: 'In-process',
-        },
-      ],
-      tags: ['Blazor'],
-    },
-    {
-      title: 'Using Metronic with .NET multi tenant application',
-      summary:
-        'When approx. is the next update for the Laravel version planned? Waiting for the CRUD, 2nd factor etc. features before starting my project. Also can we expect the Laravel + Vue version in the next update ?',
-      author: 'Ana Quil',
-      date: '5 days ago',
-      avatar: 'media/avatars/300-10.jpg',
-      answers: '2',
-      upvotes: '4',
-      icons: [
-        {
-          path: 'check-circle',
-          class: 'text-success',
-          tooltip: 'Resolved',
-        },
-      ],
-      tags: ['Aspdotnet'],
-    },
   ]
 
   useEffect(() => {
@@ -185,18 +113,20 @@ const Questions: FC<QuestionsProps> = (props) => {
     <>
     <div className='mb-10'>
         {questions.map((item:any, i:number) => {
-          console.log(item)
           return (
             <Fragment key={`question_${i}`}>
-              <div className='mb-0'>
-                <div className='d-flex align-items-center mb-4'>
+              <div className="mb-0">
+                <div className="d-flex align-items-center mb-4">
                   <Link
-                    to='/apps/devs/question'
-                    className='fs-2 fw-bolder text-gray-900 text-hover-primary me-1'
+                    to={{
+                      pathname: `/apps/devs/question/${item.id}`,
+                    }}
+                    className="fs-2 fw-bolder text-gray-900 text-hover-primary me-1"
                   >
                     {item.title}
                   </Link>
-                  <div className='d-flex align-items-center'>
+                  
+                  <div className="d-flex align-items-center">
                     {/* {item.icons.map((icon, j) => {
                       return (
                         <span className='ms-1' key={`icons_${j}`}>
@@ -206,29 +136,35 @@ const Questions: FC<QuestionsProps> = (props) => {
                     })} */}
                   </div>
                 </div>
-                <div className='fs-base fw-normal text-gray-700 mb-4'>{item.description}</div>
+                <div className="fs-base fw-normal text-gray-700 mb-4">
+                  {item.description}
+                </div>
 
-                <div className='d-flex flex-stack flex-wrap'>
-                  <div className='d-flex align-items-center py-1'>
-                    <div className='symbol symbol-35px me-2'>
-                      {item.avatar && <img src={toAbsoluteUrl(item.avatar)} alt='user' />}
+                <div className="d-flex flex-stack flex-wrap">
+                  <div className="d-flex align-items-center py-1">
+                    <div className="symbol symbol-35px me-2">
+                      {item.avatar && (
+                        <img src={toAbsoluteUrl(item.avatar)} alt="user" />
+                      )}
                       {!item.avatar && (
-                        <div className='symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase'>
+                        <div className="symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase">
                           {item.createdBy.name.charAt(0)}
                         </div>
                       )}
                     </div>
 
-                    <div className='d-flex flex-column align-items-start justify-content-center'>
-                      <span className='text-gray-900 fs-7 fw-bold lh-1 mb-2'>{item.createdBy.name}</span>
+                    <div className="d-flex flex-column align-items-start justify-content-center">
+                      <span className="text-gray-900 fs-7 fw-bold lh-1 mb-2">
+                        {item.createdBy.name}
+                      </span>
                       {new Date(item.created_date).toLocaleString()}
-                      </div>
+                    </div>
                   </div>
 
-                  <div className='d-flex align-items-center py-1'>
+                  <div className="d-flex align-items-center py-1">
                     <Link
-                      to='/apps/devs/question'
-                      className='btn btn-sm btn-outline btn-outline-dashed btn-outline-default px-4 me-2'
+                      to="/apps/devs/question"
+                      className="btn btn-sm btn-outline btn-outline-dashed btn-outline-default px-4 me-2"
                     >
                       {item.answers} Answers
                     </Link>
@@ -247,9 +183,9 @@ const Questions: FC<QuestionsProps> = (props) => {
                   </div>
                 </div>
               </div>
-              <div className='separator separator-dashed border-gray-300 my-8'></div>
-                </Fragment>
-          )
+              <div className="separator separator-dashed border-gray-300 my-8"></div>
+            </Fragment>
+          );
         })}
         </div>
       <div className='mb-10'>
