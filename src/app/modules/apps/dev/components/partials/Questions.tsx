@@ -16,6 +16,7 @@ const Questions: FC<QuestionsProps> = (props) => {
   const [questions, setQuestions] = useState<any>([]);
   const questions1 = [
     {
+      id:1,
       title: 'How to use Metronic with Django Framework ?',
       summary:
         'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
@@ -39,6 +40,7 @@ const Questions: FC<QuestionsProps> = (props) => {
       tags: ['Metronic'],
     },
     {
+      id:2,
       title: 'When to expect new version of Laravel ?',
       summary:
         'When approx. is the next update for the Laravel version planned? Waiting for the CRUD, 2nd factor etc. features before starting my project. Also can we expect the Laravel + Vue version in the next update ?',
@@ -195,7 +197,7 @@ const Questions: FC<QuestionsProps> = (props) => {
               <div className='mb-0'>
                 <div className='d-flex align-items-center mb-4'>
                   <Link
-                    to='/apps/devs/question'
+                    to={`/apps/devs/question/${item.id}`}
                     className='fs-2 fw-bolder text-gray-900 text-hover-primary me-1'
                   >
                     {item.title}

@@ -6,15 +6,19 @@ import {TextFormatting} from './partials/TextFormatting'
 import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
 import {Replies} from './partials/Replies'
 import axios from "axios"
-import { useParams } from 'react-router-dom';
-
+import { useParams, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik'
 
 const Question: React.FC = () => {
 
   const REACT_APP_API_URL =
-  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  import.meta.env.REACT_APP_API_URL || "http://localhost:8081";
   const { id } = useParams();
   const [question, setQuestion] = useState<any>([]);
+  const [replies, setReplies] = useState([]);
+  const [textFormatting, setTextFormatting] = useState<boolean>(false)
+  const [loading, setLoading ] = useState(false)
+  let navigate = useNavigate();
 
   useEffect(() => {
     async function fetchQuesitonById() {
@@ -38,12 +42,52 @@ const Question: React.FC = () => {
         });
       }
 
+      async function fetchAllReplies() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${id}`)
+        setReplies(response.data.data);
+        console.log("Response: ", response.data.data);
+  
+      }
+      fetchAllReplies();
       fetchQuesitonById();
       console.log("Hello Question");
   }, []);
 
+  const initialValues = {
+    reply: ""
+  };
 
-  const [textFormatting, setTextFormatting] = useState<boolean>(false)
+  const formik  = useFormik({
+    initialValues:initialValues,
+    onSubmit: async (values) => {
+      setLoading(true)
+      addReply(values.reply)
+      navigate(`/dashboard`);
+    }
+    
+  })
+  
+  function addReply(
+    reply: string,
+  ){
+    return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/replies`, {
+      reply: reply,
+      question_id: id,
+      parent_question_reply_id: -1,
+      reply_by: 2,
+      company_id:1
+    })
+    .then(response => {
+      console.log(response);
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+      alert('Reply has been successfully Added!')
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
 
   return (
     question && (
@@ -123,26 +167,30 @@ const Question: React.FC = () => {
 
             <a
               href='#'
-              className='btn btn-sm btn-flex btn-light px-4'
+              className='btn btn-sm btn-flex btn-light px-2'
               data-bs-toggle='tooltip'
               title='Upvote this question'
               data-bs-dismiss='click'
             >
               23
-              <KTIcon iconName='black-right' className='fs-7 ms-1 me-1' />
+              <KTIcon iconName='black-up' className='fs-7 ms-1 me-1' />
             </a>
           </div>
         </div>
       </div>
 
-      {/* <form id='kt_devs_reply_form' className='form mb-10'>
+      <div className='separator separator-dashed border-gray-300 mt-8 mb-10'></div>
+
+      <form id='kt_devs_reply_form' onSubmit={formik.handleSubmit} className='form mb-10'>
         <div className='form-group mb-2'>
           <textarea
-            name='comment'
+            name='reply'
             className='form-control'
             rows={6}
             placeholder='Your reply here..'
             maxLength={1000}
+            value={formik.values.reply}
+            onChange={formik.handleChange}
             data-kt-autosize='true'
           />
         </div>
@@ -157,14 +205,16 @@ const Question: React.FC = () => {
             Text formatting options
           </div>
 
-          <button className='btn btn-primary fw-bolder' data-kt-action='submit'>
+          <button className='btn btn-primary fw-bolder' type='submit'>
             Submit
           </button>
         </div>
 
         {textFormatting && <TextFormatting />}
       </form>
-      <Replies /> */}
+      
+      {replies.length ? <><Replies questionId={id}/></>:(<><h2 className='fw-bolder text-gray-900 mb-10'>Replies({replies.length})</h2></>)}
+      
     </EnableSidebar>));
 }
 
