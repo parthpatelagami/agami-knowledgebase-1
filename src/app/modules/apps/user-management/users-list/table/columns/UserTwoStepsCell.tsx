@@ -1,11 +1,14 @@
 import {FC} from 'react'
 
 type Props = {
-  two_steps?: boolean
+  active?: boolean
 }
 
-const UserTwoStepsCell: FC<Props> = ({two_steps}) => (
-  <> {two_steps && <div className='badge badge-light-success fw-bolder'>Enabled</div>}</>
+const UserTwoStepsCell: FC<Props> = ({active}) => (
+  <> {Number(active) === 1 ? 
+  <div className='badge badge-light-info fw-bolder'>Activate</div> : 
+  <div className='badge badge-light-warning fw-bolder'>Deactivate</div> 
+  }</>
 )
 
 export {UserTwoStepsCell}

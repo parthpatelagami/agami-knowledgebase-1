@@ -14,6 +14,9 @@ export type User = {
     label: string
     state: string
   }
+  created_date?: string
+  active? : boolean
+  category_name?: string
 }
 
 export type UsersQueryResponse = Response<Array<User>>

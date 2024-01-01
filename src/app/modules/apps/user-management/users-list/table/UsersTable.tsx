@@ -8,16 +8,26 @@ import {User} from '../core/_models'
 import {UsersListLoading} from '../components/loading/UsersListLoading'
 import {UsersListPagination} from '../components/pagination/UsersListPagination'
 import {KTCardBody} from '../../../../../../knowledgebase/helpers'
+import {FC, Fragment, useEffect, useState} from 'react'
+import { UserActionsCell } from './columns/UserActionsCell'
+
+import axios from 'axios'
 
 const UsersTable = () => {
+  const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+
   const users = useQueryResponseData()
+  console.log("users", users)
   const isLoading = useQueryResponseLoading()
+
   const data = useMemo(() => users, [users])
+  console.log(data);
   const columns = useMemo(() => usersColumns, [])
   const {getTableProps, getTableBodyProps, headers, rows, prepareRow} = useTable({
     columns,
-    data,
-  })
+    data
+      })
 
   return (
     <KTCardBody className='py-4'>
@@ -38,7 +48,7 @@ const UsersTable = () => {
             {rows.length > 0 ? (
               rows.map((row: Row<User>, i) => {
                 prepareRow(row)
-                return <CustomRow row={row} key={`row-${i}-${row.id}`} />
+                return <CustomRow  row={row} key={`row-${i}-${row.id}`} />;
               })
             ) : (
               <tr>
@@ -52,8 +62,8 @@ const UsersTable = () => {
           </tbody>
         </table>
       </div>
-      <UsersListPagination />
-      {isLoading && <UsersListLoading />}
+      {/* <UsersListPagination /> */}
+      {/* {isLoading && <UsersListLoading />} */}
     </KTCardBody>
   )
 }

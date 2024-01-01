@@ -6,12 +6,19 @@ import {ID, KTIcon, QUERIES} from '../../../../../../../knowledgebase/helpers'
 import {useListView} from '../../core/ListViewProvider'
 import {useQueryResponse} from '../../core/QueryResponseProvider'
 import {deleteUser} from '../../core/_requests'
+import { useNavigate } from 'react-router-dom'
+import axios from "axios"
+
+const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+
 
 type Props = {
   id: ID
 }
 
 const UserActionsCell: FC<Props> = ({id}) => {
+  console.log("id", id)
   const {setItemIdForUpdate} = useListView()
   const {query} = useQueryResponse()
   const queryClient = useQueryClient()
@@ -20,9 +27,7 @@ const UserActionsCell: FC<Props> = ({id}) => {
     MenuComponent.reinitialization()
   }, [])
 
-  const openEditModal = () => {
-    setItemIdForUpdate(id)
-  }
+  const navigate = useNavigate()
 
   const deleteItem = useMutation(() => deleteUser(id), {
     // 💡 response of the mutation is passed to onSuccess
@@ -31,6 +36,10 @@ const UserActionsCell: FC<Props> = ({id}) => {
       queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`])
     },
   })
+
+  const editUser = () => {
+    navigate(`/apps/devs/editCategory/${id}`);
+}
 
   return (
     <>
@@ -50,8 +59,8 @@ const UserActionsCell: FC<Props> = ({id}) => {
       >
         {/* begin::Menu item */}
         <div className='menu-item px-3'>
-          <a className='menu-link px-3' onClick={openEditModal}>
-            Edit
+          <a className='menu-link px-3' onClick={editUser}>    
+                  Edit
           </a>
         </div>
         {/* end::Menu item */}

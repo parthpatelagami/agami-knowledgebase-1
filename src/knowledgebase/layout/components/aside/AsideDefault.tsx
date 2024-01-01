@@ -106,11 +106,18 @@ const AsideDefault: FC = () => {
           </div>
 
           <div className='menu-item'>
+            <NavLink to='/apps/category-management' className='menu-link'>
+              <span className='menu-title'>My Categories</span>
+            </NavLink>
+          </div>
+
+          <div className='menu-item'>
             <Link to='/' className='menu-link'>
               <span className='menu-title'>Account</span>
               <span className='menu-badge'>1,400</span>
             </Link>
           </div>
+
 
           <div className='menu-item'>
             <Link to='/' className='menu-link'>

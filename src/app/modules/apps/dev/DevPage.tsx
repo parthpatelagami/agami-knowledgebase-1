@@ -7,6 +7,8 @@ import {Tag} from './components/Tag'
 import { Questions } from './components/partials/Questions'
 import { Article } from './components/AddArticle'
 import { Articles } from './components/Article'
+import { AddCategory } from './components/AddCategory'
+import {EditCategory} from './components/EditCategory'
 
 const devBreadCrumbs: Array<PageLink> = [
   {
@@ -81,6 +83,24 @@ const DevPage = () => {
             </>
           }
         />
+        <Route
+         path='addCategory'
+         element={
+           <>
+             <PageTitle breadcrumbs={devBreadCrumbs}>Private chat</PageTitle>
+<AddCategory />
+           </>
+         }
+       />
+                 <Route
+         path='editCategory/:id'
+         element={
+           <>
+             <PageTitle breadcrumbs={devBreadCrumbs}>Private chat</PageTitle>
+<EditCategory />
+           </>
+         }
+       />
         <Route
           path='tag'
           element={
