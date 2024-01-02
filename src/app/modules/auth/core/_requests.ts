@@ -35,6 +35,14 @@ export function register(
   });
 }
 
+export function getUserById(
+  id: string,
+) {
+  return axios.post(`${REACT_APP_API_URL}/knowledgebase/getUserById`, {
+    id,
+  });
+}
+
 export function generateOTP(
   email: string,
 ) {

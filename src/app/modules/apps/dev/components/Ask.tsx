@@ -29,12 +29,7 @@ const Ask: React.FC = () => {
 
   useEffect(() => {
     async function fetchProducts() {
-        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/products`, {
-        headers: {
-            'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-            'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
-        }
-    })
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/products`)
       .then(function (response: any) {
         console.log(response);
         if(response.status == 200) {
@@ -85,11 +80,6 @@ const Ask: React.FC = () => {
       modified_by:1,
       created_by:1,
       company_id:1
-    }, {
-      headers: {
-        'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-        'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
-      }
     })
     .then(response => {
       console.log(response);

@@ -4,9 +4,11 @@ import * as Yup from 'yup'
 import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {useFormik} from 'formik'
-import {getUserByToken, login} from '../core/_requests'
+import {getUserByToken, login,getUserById} from '../core/_requests'
 import {toAbsoluteUrl} from '../../../../knowledgebase/helpers'
 import {useAuth} from '../core/Auth'
+import { jwtDecode } from "jwt-decode";
+import { UserModel } from '..'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,8 +23,8 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'admin@demo.com',
-  password: 'demo',
+  email: 'nimit.desai@agami-tech.com',
+  password: '1234',
 }
 
 /*
@@ -33,7 +35,7 @@ const initialValues = {
 
 export function Login() {
   const [loading, setLoading] = useState(false)
-  const {saveAuth, setCurrentUser} = useAuth()
+  const {saveAuth, currentUser, setCurrentUser} = useAuth()
 
   const formik = useFormik({
     initialValues,
@@ -42,9 +44,27 @@ export function Login() {
       setLoading(true)
       try {
         const {data: auth} = await login(values.email, values.password)
-        saveAuth(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
+        const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
+        const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
+        const companyId = decodedRefreshToken && 'companyId' in decodedRefreshToken ? decodedRefreshToken.companyId +"" : "";
+        const {data: user} = await getUserById(userId)
+        var userModelObject: UserModel | undefined;
+
+        if (decodedRefreshToken) {
+          userModelObject = {
+            id: userId,
+            email: values.email,
+            password: values.password,
+            companyId: companyId,
+            fullname: user.name,
+            api_token: auth.api_token,
+            refreshToken: auth.refreshToken,
+          };
+        } else {
+          userModelObject = undefined;
+        }        
+        userModelObject && setCurrentUser(userModelObject)
+        userModelObject && saveAuth(userModelObject)
       } catch (error) {
         console.error(error)
         saveAuth(undefined)
@@ -82,7 +102,7 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Use account <strong>admin@demo.com</strong> and password <strong>demo</strong> to
+            Use account <strong>nimit.desai@agami-tech.com</strong> and password <strong>1234</strong> to
             continue.
           </div>
         </div>

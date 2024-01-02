@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import React, {FC} from 'react'
+import {useAuth} from '../../../../app/modules/auth'
 import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import {
   HeaderNotificationsMenu,
@@ -13,6 +14,7 @@ const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
   toolbarButtonIconSizeClass = 'fs-1'
 
 const Topbar: FC = () => {
+  const {currentUser, logout} = useAuth()
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
       <div className='topbar d-flex align-items-stretch flex-shrink-0'>
@@ -57,7 +59,7 @@ const Topbar: FC = () => {
           >
             <div className='d-none d-md-flex flex-column align-items-end justify-content-center me-2'>
               <span className='text-muted fs-7 fw-bold lh-1 mb-2'>Hello</span>
-              <span className='text-gray-900 fs-base fw-bolder lh-1'>Richard</span>
+              <span className='text-gray-900 fs-base fw-bolder lh-1'>{currentUser && currentUser.fullname && currentUser?.fullname}</span>
             </div>
 
             <div className='symbol symbol-30px symbol-md-40px'>

@@ -49,18 +49,22 @@ const removeAuth = () => {
 }
 
 export function setupAxios(axios: any) {
-  axios.defaults.headers.Accept = 'application/json'
+  axios.defaults.headers.Accept = 'application/json';
+
   axios.interceptors.request.use(
-    (config: {headers: {Authorization: string}}) => {
-      const auth = getAuth()
+    (config: {headers: {[key: string]: string}}) => {
+      const auth = getAuth();
       if (auth && auth.api_token) {
-        config.headers.Authorization = `Bearer ${auth.api_token}`
+        config.headers['x-access-token'] = auth.api_token;
+      }
+      if (auth && auth.refreshToken) {
+        config.headers['x-refresh-token'] = auth.refreshToken;
       }
 
-      return config
+      return config;
     },
     (err: any) => Promise.reject(err)
-  )
+  );
 }
 
 export {getAuth, setAuth, removeAuth, AUTH_LOCAL_STORAGE_KEY}

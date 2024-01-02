@@ -44,9 +44,11 @@ export interface UserSocialNetworksModel {
 }
 
 export interface UserModel {
-  id: number
+  id: string
   username?: string
   password: string | undefined
+  api_token: string
+  refreshToken?: string
   email: string
   first_name?: string
   last_name?: string

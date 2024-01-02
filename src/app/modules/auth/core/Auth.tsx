@@ -3,8 +3,9 @@ import {FC, useState, useEffect, createContext, useContext, Dispatch, SetStateAc
 import {LayoutSplashScreen} from '../../../../knowledgebase/layout/core'
 import {AuthModel, UserModel} from './_models'
 import * as authHelper from './AuthHelpers'
-import {getUserByToken} from './_requests'
+import {getUserById} from './_requests'
 import {WithChildren} from '../../../../knowledgebase/helpers'
+import { jwtDecode } from "jwt-decode";
 
 type AuthContextProps = {
   auth: AuthModel | undefined
@@ -58,10 +59,10 @@ const AuthInit: FC<WithChildren> = ({children}) => {
 
   // We should request user by authToken (IN OUR EXAMPLE IT'S API_TOKEN) before rendering the application
   useEffect(() => {
-    const requestUser = async (apiToken: string) => {
+    const requestUser = async (id: string) => {
       try {
         if (!currentUser) {
-          const {data} = await getUserByToken(apiToken)
+          const {data} = await getUserById(id)
           if (data) {
             setCurrentUser(data)
           }
@@ -77,7 +78,9 @@ const AuthInit: FC<WithChildren> = ({children}) => {
     }
 
     if (auth && auth.api_token) {
-      requestUser(auth.api_token)
+      const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
+      const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
+      requestUser(userId)
     } else {
       logout()
       setShowSplashScreen(false)
