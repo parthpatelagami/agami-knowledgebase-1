@@ -6,7 +6,7 @@ const REACT_APP_API_URL =
 import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
 
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/verify_token`;
-export const LOGIN_URL = `${API_URL}/login`;
+export const LOGIN_URL = `${REACT_APP_API_URL}/knowledgebase/login`;
 export const REGISTER_URL = `${API_URL}/register`;
 export const REQUEST_PASSWORD_URL = `${API_URL}/forgot_password`;
 

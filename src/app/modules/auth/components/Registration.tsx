@@ -4,13 +4,14 @@ import {useState, useEffect} from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import {getUserByToken, register,generateOTP} from '../core/_requests'
+import {getUserByToken, register,generateOTP,login} from '../core/_requests'
 import {Link} from 'react-router-dom'
 import {toAbsoluteUrl} from '../../../../knowledgebase/helpers'
 import {PasswordMeterComponent} from '../../../../knowledgebase/assets/ts/components'
 import {useAuth} from '../core/Auth'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import jwt from 'jsonwebtoken';
 
 const initialValues = {
   firstname: '',
@@ -81,20 +82,24 @@ export function Registration() {
       }
       else {
         try {
-          const {data: auth} = await register(
+          await register(
             values.email,
             values.firstname,
             values.password,
             values.changepassword,
             values.otp,
           )
-          console.log(auth);
+          const {data: auth} = await login(values.email, values.password)
+          console.log(auth.api_token);
+          
           saveAuth(auth)
           console.log(auth)
           showSuccessToastMessage("Register successfully with "+values.email+" email.")
           setLoading(false)
           // const {data: user} = await getUserByToken(auth.api_token)
-          setCurrentUser(undefined)
+          const decoded = jwt.decode(auth.api_token, { complete: true });
+          console.log(decoded);
+          setCurrentUser({id:12,email:'nimit.desai@agami-tech.com',password:'1234',companyId:'1',fullname:'Nimit'})
         } catch (error) {
           console.error(error)
           saveAuth(undefined)

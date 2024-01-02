@@ -45,14 +45,15 @@ export interface UserSocialNetworksModel {
 
 export interface UserModel {
   id: number
-  username: string
+  username?: string
   password: string | undefined
   email: string
-  first_name: string
-  last_name: string
-  fullname?: string
-  occupation?: string
-  companyName?: string
+  first_name?: string
+  last_name?: string
+  fullname: string
+  occupation?: string,
+  companyName?: string,
+  companyId:string,
   phone?: string
   roles?: Array<number>
   pic?: string
