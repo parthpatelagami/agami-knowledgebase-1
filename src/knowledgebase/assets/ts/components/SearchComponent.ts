@@ -455,15 +455,19 @@ class SearchComponent {
     options: ISearchOptions = defaultSearchOptions,
     queries: ISearchQueries = defaultSearchQueires
   ): SearchComponent | undefined => {
+    console.log("selector",selector)
     const element = document.body.querySelector(selector)
+    console.log("elements",element)
     if (!element) {
       return
     }
     const item = element as HTMLElement
+    console.log("item",item)
     let Search = SearchComponent.getInstance(item)
     if (!Search) {
       Search = new SearchComponent(item, options, queries)
     }
+    console.log("search1", Search)
     return Search
   }
 

@@ -1,25 +1,31 @@
 import React, {FC, useEffect, useRef, useState} from 'react'
 import {SearchComponent} from '../../../assets/ts/components'
 import {KTIcon, toAbsoluteUrl} from '../../../helpers'
+import { useNavigate } from 'react-router-dom'
+import axios from "axios"
+import { Question } from '../../../../app/modules/apps/dev/components/Question'
+const REACT_APP_API_URL =
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const Search: FC = () => {
   const [menuState, setMenuState] = useState<'main' | 'advanced' | 'preferences'>('main')
+  console.log("menuState", menuState)
   const element = useRef<HTMLDivElement | null>(null)
+  console.log("element", element)
   const wrapperElement = useRef<HTMLDivElement | null>(null)
   const resultsElement = useRef<HTMLDivElement | null>(null)
+  console.log("resultsElement",resultsElement)
   const suggestionsElement = useRef<HTMLDivElement | null>(null)
+  console.log("suggestionsElement",suggestionsElement)
   const emptyElement = useRef<HTMLDivElement | null>(null)
 
-  const SearchComponentData = [
-    {
-      title: "test", description: "sdjkfsdjknf"
-    },
-    { title: "meet", description: "sasdsads" }
-    ]
+  const [searchData, setSearchData] = useState([]);
+  console.log("searchData", searchData)
 
   const processs = (search: SearchComponent) => {
     setTimeout(function () {
       const number = Math.floor(Math.random() * 6) + 1
+      console.log("number", number)
 
       // Hide recently viewed
       suggestionsElement.current!.classList.add('d-none')
@@ -38,6 +44,20 @@ const Search: FC = () => {
 
       // Complete search
       search.complete()
+
+      axios.post(`${REACT_APP_API_URL}/knowledgebase/searchquestions`, {
+        // content: search.inputElement.value,
+        content: "Test",
+        companyId: 1
+      })
+      .then(function (response: any) {
+        if(response.status === 200) {
+          setSearchData(response.data.questions);
+        }
+      })
+      .catch(function (error: any) {
+        console.log(error);
+      });
     }, 1500)
   }
 
@@ -53,6 +73,7 @@ const Search: FC = () => {
   useEffect(() => {
     // Initialize search handler
     const searchObject = SearchComponent.createInsance('#kt_header_search')
+    console.log("searchObject", searchObject)
 
     // Search handler
     searchObject!.on('kt.search.process', processs)
@@ -159,25 +180,33 @@ const Search: FC = () => {
 
             <div ref={resultsElement} data-kt-search-element='results' className='d-none'>
               <div className='scroll-y mh-200px mh-lg-350px'>
-                <h3 className='fs-5 text-muted m-0 pb-5' data-kt-search-element='category-title'>
+                <h3 className='fs-5 text-muted m-0 pb-5' data-kt-search-element='questions-title'>
                   Questions
                 </h3>
 
-{SearchComponentData.map(Search => 
-                <a
-                  href='/#'
-                  className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
-                >
 
-                  <div className='d-flex flex-column justify-content-start fw-bold'>
-                    <span className='fs-6 fw-bold'>{Search.title}</span>
-                    <span className='fs-7 fw-bold text-muted'>{Search.description}</span>
-                  </div>
-                </a>
-)}
+                {searchData.map((question) => (
+        <a
+          key={question._id} // Assuming _id is a unique identifier for each question
+          href='/apps/devs/questions'
+          className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
+        >
+                          <div className='symbol symbol-40px me-4'>
+                          <div className="symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase">
+                          {/* {question.createdBy.name.charAt(0)} */}
+                          Q
+                        </div>          
+                                </div>
+          <div className='d-flex flex-column justify-content-start fw-bold'>
+            <span className='fs-6 fw-bold'>{question.title}</span>
+            <span className='fs-7 fw-bold text-muted'>{question.description}</span>
+          </div>
+        </a>
+      ))}
+
                 {/* <a
                   href='/#'
-                  className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
+                  cla ssName='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
                 >
                   <div className='symbol symbol-40px me-4'>
                     <img src={toAbsoluteUrl('media/avatars/300-2.jpg')} alt='' />
@@ -614,9 +643,9 @@ Test 001                    </a>
                 </span>
                 <input className='form-check-input' type='checkbox' value='1' defaultChecked />
               </label>
-            </div>
+            </div> */}
 
-            <div className='py-4 border-bottom'>
+            {/* <div className='py-4 border-bottom'>
               <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
                 <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
 Category                </span>
