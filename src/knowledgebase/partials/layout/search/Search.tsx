@@ -10,6 +10,13 @@ const Search: FC = () => {
   const suggestionsElement = useRef<HTMLDivElement | null>(null)
   const emptyElement = useRef<HTMLDivElement | null>(null)
 
+  const SearchComponentData = [
+    {
+      title: "test", description: "sdjkfsdjknf"
+    },
+    { title: "meet", description: "sasdsads" }
+    ]
+
   const processs = (search: SearchComponent) => {
     setTimeout(function () {
       const number = Math.floor(Math.random() * 6) + 1
@@ -153,24 +160,22 @@ const Search: FC = () => {
             <div ref={resultsElement} data-kt-search-element='results' className='d-none'>
               <div className='scroll-y mh-200px mh-lg-350px'>
                 <h3 className='fs-5 text-muted m-0 pb-5' data-kt-search-element='category-title'>
-                  Users
+                  Questions
                 </h3>
 
+{SearchComponentData.map(Search => 
                 <a
                   href='/#'
                   className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
                 >
-                  <div className='symbol symbol-40px me-4'>
-                    <img src={toAbsoluteUrl('media/avatars/300-6.jpg')} alt='' />
-                  </div>
 
                   <div className='d-flex flex-column justify-content-start fw-bold'>
-                    <span className='fs-6 fw-bold'>Karina Clark</span>
-                    <span className='fs-7 fw-bold text-muted'>Marketing Manager</span>
+                    <span className='fs-6 fw-bold'>{Search.title}</span>
+                    <span className='fs-7 fw-bold text-muted'>{Search.description}</span>
                   </div>
                 </a>
-
-                <a
+)}
+                {/* <a
                   href='/#'
                   className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
                 >
@@ -224,9 +229,9 @@ const Search: FC = () => {
                     <span className='fs-6 fw-bold'>Edward Kulnic</span>
                     <span className='fs-7 fw-bold text-muted'>System Administrator</span>
                   </div>
-                </a>
+                </a> */}
 
-                <h3
+                {/* <h3
                   className='fs-5 text-muted m-0 pt-5 pb-5'
                   data-kt-search-element='category-title'
                 >
@@ -402,7 +407,7 @@ const Search: FC = () => {
                     <span className='fs-6 fw-bold'>Dashboard Analitics Launch</span>
                     <span className='fs-7 fw-bold text-muted'>#34560</span>
                   </div>
-                </a>
+                </a> */}
               </div>
             </div>
 
@@ -413,109 +418,13 @@ const Search: FC = () => {
 
               <div className='scroll-y mh-200px mh-lg-325px'>
                 <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='phone' className='fs-2 text-primary' />
-                    </span>
-                  </div>
 
                   <div className='d-flex flex-column'>
                     <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      BoomApp by Keenthemes
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#45789</span>
+Test 001                    </a>
                   </div>
                 </div>
 
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='chart-simple' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      "Kept API Project Meeting
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#84050</span>
-                  </div>
-                </div>
-
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='chart' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      "KPI Monitoring App Launch
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#84250</span>
-                  </div>
-                </div>
-
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='chart-simple-3' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      Project Reference FAQ
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#67945</span>
-                  </div>
-                </div>
-
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='sms' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      "FitPro App Development
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#84250</span>
-                  </div>
-                </div>
-
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='bank' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      Shopix Mobile App
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#45690</span>
-                  </div>
-                </div>
-
-                <div className='d-flex align-items-center mb-5'>
-                  <div className='symbol symbol-40px me-4'>
-                    <span className='symbol-label bg-light'>
-                      <KTIcon iconName='chart-simple-3' className='fs-2 text-primary' />
-                    </span>
-                  </div>
-
-                  <div className='d-flex flex-column'>
-                    <a href='/#' className='fs-6 text-gray-800 text-hover-primary fw-bold'>
-                      "Landing UI Design" Launch
-                    </a>
-                    <span className='fs-7 text-muted fw-bold'>#24005</span>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -691,9 +600,18 @@ const Search: FC = () => {
             <div className='pb-4 border-bottom'>
               <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
                 <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
-                  Projects
+                  Questions
                 </span>
 
+                <input className='form-check-input' type='checkbox' value='1' defaultChecked />
+              </label>
+            </div>
+
+            {/* <div className='py-4 border-bottom'>
+              <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
+                <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
+                  Articles
+                </span>
                 <input className='form-check-input' type='checkbox' value='1' defaultChecked />
               </label>
             </div>
@@ -701,36 +619,10 @@ const Search: FC = () => {
             <div className='py-4 border-bottom'>
               <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
                 <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
-                  Targets
-                </span>
-                <input className='form-check-input' type='checkbox' value='1' defaultChecked />
-              </label>
-            </div>
-
-            <div className='py-4 border-bottom'>
-              <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
-                <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
-                  Affiliate Programs
-                </span>
+Category                </span>
                 <input className='form-check-input' type='checkbox' value='1' />
               </label>
-            </div>
-
-            <div className='py-4 border-bottom'>
-              <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
-                <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>
-                  Referrals
-                </span>
-                <input className='form-check-input' type='checkbox' value='1' defaultChecked />
-              </label>
-            </div>
-
-            <div className='py-4 border-bottom'>
-              <label className='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack'>
-                <span className='form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2'>Users</span>
-                <input className='form-check-input' type='checkbox' />
-              </label>
-            </div>
+            </div> */}
 
             <div className='d-flex justify-content-end pt-7'>
               <button
