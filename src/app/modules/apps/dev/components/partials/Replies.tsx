@@ -17,7 +17,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
   const [loading, setLoading ] = useState(false)
   let navigate = useNavigate();
   const [parentquestionId, setParentquestionId] = useState(null);
-  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:8081";
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
   
   const replies = [
     {

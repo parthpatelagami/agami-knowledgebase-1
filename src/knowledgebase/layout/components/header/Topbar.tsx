@@ -59,7 +59,7 @@ const Topbar: FC = () => {
           >
             <div className='d-none d-md-flex flex-column align-items-end justify-content-center me-2'>
               <span className='text-muted fs-7 fw-bold lh-1 mb-2'>Hello</span>
-              <span className='text-gray-900 fs-base fw-bolder lh-1'>{currentUser && currentUser.fullname && currentUser?.fullname}</span>
+              <span className='text-gray-900 fs-base fw-bolder lh-1'>{currentUser && currentUser.name && currentUser?.name}</span>
             </div>
 
             <div className='symbol symbol-30px symbol-md-40px'>

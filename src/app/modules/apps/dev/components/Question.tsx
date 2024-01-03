@@ -12,7 +12,7 @@ import { useFormik } from 'formik'
 const Question: React.FC = () => {
 
   const REACT_APP_API_URL =
-  import.meta.env.REACT_APP_API_URL || "http://localhost:8081";
+  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
   const { id } = useParams();
   const [question, setQuestion] = useState<any>([]);
   const [replies, setReplies] = useState([]);

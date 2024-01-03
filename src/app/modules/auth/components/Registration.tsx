@@ -96,6 +96,9 @@ export function Registration() {
           const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
           const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
           const companyId = decodedRefreshToken && 'companyId' in decodedRefreshToken ? decodedRefreshToken.companyId +"" : "";
+          saveAuth({id: userId,
+            api_token: auth.api_token,
+            refreshToken: auth.refreshToken,})
           var userModelObject: UserModel | undefined;
           if (decodedRefreshToken) {
             userModelObject = {
@@ -103,15 +106,13 @@ export function Registration() {
               email: values.email,
               password: values.password,
               companyId: companyId,
-              fullname: values.firstname,
-              api_token: auth.api_token,
-              refreshToken: auth.refreshToken,
+              name: values.firstname,
+              
             };
           } else {
             userModelObject = undefined;
           }
           userModelObject && setCurrentUser(userModelObject)
-          userModelObject && saveAuth(userModelObject)
         } catch (error) {
           console.error(error)
           saveAuth(undefined)

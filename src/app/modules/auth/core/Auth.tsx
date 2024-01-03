@@ -77,10 +77,10 @@ const AuthInit: FC<WithChildren> = ({children}) => {
       }
     }
 
-    if (auth && auth.api_token) {
-      const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
-      const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
-      requestUser(userId)
+    if (auth && auth.id) {
+      //const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
+      //const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
+      requestUser(auth.id)
     } else {
       logout()
       setShowSplashScreen(false)
