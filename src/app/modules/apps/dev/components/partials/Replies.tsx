@@ -16,7 +16,8 @@ const Replies: React.FC<ReplyProps> = (props) => {
   const [data, setData] = useState<any>([])
   const [loading, setLoading ] = useState(false)
   let navigate = useNavigate();
-  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  const [parentquestionId, setParentquestionId] = useState(null);
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:8081";
   
   const replies = [
     {
@@ -128,9 +129,15 @@ const Replies: React.FC<ReplyProps> = (props) => {
   useEffect(()=>{
     async function fetchAllReplies() {
       const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${props.questionId}`)
-      setData(response.data.data);
-      console.log("Data: ", response.data.data)
+      // setData(response.data.data);
+      // console.log("Data: ", response.data.data)
     }
+    async function fetchreplydata() {
+      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}`)
+      console.log("Reply data: ", response.data.data);
+      setData(response.data.data);
+    }
+    fetchreplydata();
     fetchAllReplies();
   },[])
   
@@ -142,7 +149,11 @@ const Replies: React.FC<ReplyProps> = (props) => {
     onSubmit: async (values) => {
       setLoading(true)
       addReply(values.reply)
-      navigate(`/dashboard`);
+      // navigate(`/dashboard`);
+      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}`)
+      console.log("Reply data: ", response.data.data);
+      setData(response.data.data);
+      values.reply = '';
     }
     
   })
@@ -152,17 +163,16 @@ const Replies: React.FC<ReplyProps> = (props) => {
   ){
     return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/replies`, {
       reply: reply,
-      question_id: 2,
-      parent_question_reply_id: 2,
-      reply_by: 2,
-      company_id:1
+      question_id: props.questionId,
+      parent_question_reply_id: parentquestionId,
+      reply_by: 2
     })
     .then(response => {
       console.log(response);
       setTimeout(() => {
         setLoading(false)
       }, 1000)
-      alert('Reply has been successfully Added!')
+      // alert('Reply has been successfully Added!')
       setTextReplybox(-1);
     })
     .catch(error => {
@@ -198,7 +208,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
 
                     <div className='d-flex flex-column align-items-start justify-content-center'>
                       <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{item.createdBy.name}</span>
-                      <span className='text-muted fs-8 fw-bold lh-1'>{item.createdBy.created_date}</span>
+                      <span className='text-muted fs-8 fw-bold lh-1'>{item.reply_date}</span>
                     </div>
                   </div>
 
@@ -209,6 +219,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
                       className='btn btn-sm btn-flex btn-color-gray-500 btn-active-light me-1'
                       onClick={() => {
                         setTextReplybox(i)
+                        setParentquestionId(item.id)
                       }}
                     >
                       Reply
@@ -217,10 +228,10 @@ const Replies: React.FC<ReplyProps> = (props) => {
                 </div>
 
                 <div className='fs-5 fw-normal text-gray-800'>{item.reply}</div>
-                {/* {
-                  item.messagewithmessage.length ? 
+                {
+                  item.chield_data.length ? 
                   <>
-                  {item.messagewithmessage.map(items=>
+                  {item.chield_data.map((items:any)=>
                    
                     <div className="ps-7 mb-0 pe-5">
                     <div className={`border rounded p-2 p-lg-6 mb-10 mt-10 ${items.indent}`} key={items.id}>
@@ -231,14 +242,14 @@ const Replies: React.FC<ReplyProps> = (props) => {
                               {items.avatar && <img src={toAbsoluteUrl(items.avatar)} alt='user' />}
                               {!items.avatar && (
                                 <div className='symbol-label bg-light-success fs-3 fw-bold text-success text-uppercase'>
-                                  {items.author.charAt(0)}
+                                  {item.createdBy?item.createdBy.name.charAt(0):"A"}
                                 </div>
                               )}
                             </div>
 
                             <div className='d-flex flex-column align-items-start justify-content-center'>
-                              <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{items.author}</span>
-                              <span className='text-muted fs-8 fw-bold lh-1'>{items.date}</span>
+                              <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{items.createdBy.name}</span>
+                              <span className='text-muted fs-8 fw-bold lh-1'>{items.updated_date}</span>
                             </div>
                           </div>
 
@@ -247,7 +258,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
                           </div>
                         </div>
 
-                        <div className='fs-5 fw-normal text-gray-800'>{items.message}</div>
+                        <div className='fs-5 fw-normal text-gray-800'>{items.reply}</div>
                       </div>        
 
                       <div className='ps-10 mb-0'></div>
@@ -258,7 +269,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
                   )} 
                   </>
                 :(<></>)
-                } */}
+                }
 
               </div>
               <div className="ps-7 mb-0 pe-5" id={'replyBox'+i}>

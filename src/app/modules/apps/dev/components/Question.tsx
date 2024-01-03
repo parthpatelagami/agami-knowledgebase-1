@@ -12,13 +12,20 @@ import { useFormik } from 'formik'
 const Question: React.FC = () => {
 
   const REACT_APP_API_URL =
-  import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  import.meta.env.REACT_APP_API_URL || "http://localhost:8081";
   const { id } = useParams();
   const [question, setQuestion] = useState<any>([]);
   const [replies, setReplies] = useState([]);
   const [textFormatting, setTextFormatting] = useState<boolean>(false)
   const [loading, setLoading ] = useState(false)
   let navigate = useNavigate();
+
+  async function fetchAllReplies() {
+    const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${id}`)
+    setReplies(response.data.data);
+    console.log("Response: ", response.data.data);
+
+  }
 
   useEffect(() => {
     async function fetchQuesitonById() {
@@ -42,12 +49,7 @@ const Question: React.FC = () => {
         });
       }
 
-      async function fetchAllReplies() {
-        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${id}`)
-        setReplies(response.data.data);
-        console.log("Response: ", response.data.data);
-  
-      }
+     
       fetchAllReplies();
       fetchQuesitonById();
       console.log("Hello Question");
@@ -62,7 +64,9 @@ const Question: React.FC = () => {
     onSubmit: async (values) => {
       setLoading(true)
       addReply(values.reply)
-      navigate(`/dashboard`);
+      fetchAllReplies();
+      // navigate('/dashboard')
+      values.reply = ''
     }
     
   })
@@ -74,8 +78,7 @@ const Question: React.FC = () => {
       reply: reply,
       question_id: id,
       parent_question_reply_id: -1,
-      reply_by: 2,
-      company_id:1
+      reply_by: 1
     })
     .then(response => {
       console.log(response);
