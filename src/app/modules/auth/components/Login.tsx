@@ -43,31 +43,32 @@ export function Login() {
     onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
       try {
-        const {data: auth} = await login(values.email, values.password)
-        const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
-        const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
-        const companyId = decodedRefreshToken && 'companyId' in decodedRefreshToken ? decodedRefreshToken.companyId +"" : "";
-        saveAuth({id: userId,
-          api_token: auth.api_token,
-          refreshToken: auth.refreshToken,})
-        const {data: user} = await getUserById(userId)
-        var userModelObject: UserModel | undefined;
+        const { data: { api_token, refreshToken } } = await login(values.email, values.password);
 
-        if (decodedRefreshToken) {
-          userModelObject = {
+        const decodedRefreshToken = refreshToken ? jwtDecode(refreshToken) : null;
+        const userId = decodedRefreshToken?.id ?? "";
+        const companyId = decodedRefreshToken?.companyId ?? "";
+
+        saveAuth({
+          id: userId,
+          api_token,
+          refreshToken,
+        });
+
+        const { data: user } = await getUserById(userId);
+
+        const userModelObject: UserModel | undefined = 
+          decodedRefreshToken && {
             id: userId,
             email: values.email,
             password: values.password,
-            companyId: companyId,
+            companyId,
             name: user.name,
-            
           };
-        } else {
-          userModelObject = undefined;
-        }        
-        userModelObject && setCurrentUser(user)
+        userModelObject && setCurrentUser(user);
+     
       } catch (error) {
-        console.error(error)
+        console.error("Login error:", error);
         saveAuth(undefined)
         setStatus('The login details are incorrect')
         setSubmitting(false)

@@ -90,29 +90,32 @@ export function Registration() {
             values.changepassword,
             values.otp,
           )
-          const {data: auth} = await login(values.email, values.password)
-          showSuccessToastMessage("Register successfully with "+values.email+" email.")
+          showSuccessToastMessage(
+            "Register successfully with " + values.email + " email."
+          );          
+          const { data: { api_token, refreshToken } } = await login(values.email, values.password);
           setLoading(false)
-          const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
-          const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
-          const companyId = decodedRefreshToken && 'companyId' in decodedRefreshToken ? decodedRefreshToken.companyId +"" : "";
-          saveAuth({id: userId,
-            api_token: auth.api_token,
-            refreshToken: auth.refreshToken,})
-          var userModelObject: UserModel | undefined;
-          if (decodedRefreshToken) {
-            userModelObject = {
+          
+          const decodedRefreshToken = refreshToken ? jwtDecode(refreshToken) : null;
+          const userId = decodedRefreshToken?.id ?? "";
+          const companyId = decodedRefreshToken?.companyId ?? "";
+
+          saveAuth({
+            id: userId,
+            api_token,
+            refreshToken,
+          });
+
+          const userModelObject: UserModel | undefined =
+            decodedRefreshToken && {
               id: userId,
               email: values.email,
               password: values.password,
-              companyId: companyId,
+              companyId,
               name: values.firstname,
-              
-            };
-          } else {
-            userModelObject = undefined;
-          }
+            };            
           userModelObject && setCurrentUser(userModelObject)
+        
         } catch (error) {
           console.error(error)
           saveAuth(undefined)
