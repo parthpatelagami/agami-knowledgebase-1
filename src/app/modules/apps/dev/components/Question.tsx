@@ -19,36 +19,40 @@ const Question: React.FC = () => {
   const [textFormatting, setTextFormatting] = useState<boolean>(false)
   const [loading, setLoading ] = useState(false)
   let navigate = useNavigate();
+  const [replyCount, setReplyCount] = useState<number>(0);
+  const [renderPage,setRenderPage] = useState<boolean>(false);
+  const [questionId, setQuestionId] = useState(id)
+  async function fetchAllReplyCount() {
+    const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replycount/${id}`)
+    setReplyCount(response.data.data);
+  } 
 
-  async function fetchAllReplies() {
-    const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${id}`)
-    setReplies(response.data.data);
-    console.log("Response: ", response.data.data);
+  async function fetchQuesitonById() {
+    const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/${id}`, {
+  })
+    .then(function (response: any) {
+      console.log(response);
+      if(response.status == 200) {
+        console.log(response.data.data)
+        setQuestion(response.data.data)
+      }
+    })
+    .catch(function (error: any) {
+      console.log(error);
+    })
+    .finally(function () {
+    });
   }
 
   useEffect(() => {
-    async function fetchQuesitonById() {
-        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/${id}`, {
-      })
-        .then(function (response: any) {
-          console.log(response);
-          if(response.status == 200) {
-            console.log(response.data.data)
-            setQuestion(response.data.data)
-          }
-        })
-        .catch(function (error: any) {
-          console.log(error);
-        })
-        .finally(function () {
-        });
-      }
-
-     
-      fetchAllReplies();
-      fetchQuesitonById();
-      console.log("Hello Question");
-  }, []);
+    async function fetAllReply() {
+      await fetchAllReplyCount();
+      await fetchQuesitonById();
+    }  
+      fetAllReply()
+      setRenderPage(false)
+  }, [renderPage]);
+ 
 
   const initialValues = {
     reply: ""
@@ -59,28 +63,31 @@ const Question: React.FC = () => {
     onSubmit: async (values) => {
       setLoading(true)
       addReply(values.reply)
-      fetchAllReplies();
-      // navigate('/dashboard')
+      setRenderPage(true);
       values.reply = ''
     }
     
   })
   
+  const user = localStorage.getItem("kt-auth-react-v");
+  const userObject = user !== null ? JSON.parse(user):{};
+  const userId = userObject.id !== undefined ? userObject.id: 1
+  
   function addReply(
     reply: string,
   ){
-    return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/replies`, {
+    return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/reply`, {
       reply: reply,
       question_id: id,
-      parent_question_reply_id: -1,
-      reply_by: 1
+      parent_question_reply_id: null,
+      reply_by: userId
     })
     .then(response => {
       console.log(response);
       setTimeout(() => {
         setLoading(false)
       }, 1000)
-      alert('Reply has been successfully Added!')
+     
     })
     .catch(error => {
       console.error(error);
@@ -211,8 +218,7 @@ const Question: React.FC = () => {
         {textFormatting && <TextFormatting />}
       </form>
       
-      {replies.length ? <><Replies questionId={id}/></>:(<><h2 className='fw-bolder text-gray-900 mb-10'>Replies({replies.length})</h2></>)}
-      
+      {replyCount > 0 ? <><Replies questionId={questionId} isRenderPage={renderPage} /></>:(<><h2 className='fw-bolder text-gray-900 mb-10'>Replies({replyCount})</h2></>)}      
     </EnableSidebar>));
 }
 

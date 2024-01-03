@@ -9,6 +9,7 @@ import axios from 'axios'
 
 interface ReplyProps {
   questionId: any;
+  isRenderPage:any
 }
 const Replies: React.FC<ReplyProps> = (props) => {
   const [textReplybox, setTextReplybox] = useState(-1);
@@ -18,7 +19,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
   let navigate = useNavigate();
   const [parentquestionId, setParentquestionId] = useState(null);
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
-  
+  const [rerender, setRerender] = useState(false)
   const replies = [
     {
       message:
@@ -127,19 +128,15 @@ const Replies: React.FC<ReplyProps> = (props) => {
     }
   ]
   useEffect(()=>{
-    async function fetchAllReplies() {
-      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${props.questionId}`)
-      // setData(response.data.data);
-      // console.log("Data: ", response.data.data)
-    }
+    
     async function fetchreplydata() {
       const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}`)
-      console.log("Reply data: ", response.data.data);
+      // console.log("Reply data: ", response.data.data);
       setData(response.data.data);
     }
     fetchreplydata();
-    fetchAllReplies();
-  },[])
+    setRerender(false)
+  },[props.isRenderPage, rerender])
   
   const initialValues = {
     reply: ""
@@ -149,23 +146,24 @@ const Replies: React.FC<ReplyProps> = (props) => {
     onSubmit: async (values) => {
       setLoading(true)
       addReply(values.reply)
-      // navigate(`/dashboard`);
-      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}`)
-      console.log("Reply data: ", response.data.data);
-      setData(response.data.data);
       values.reply = '';
+      setRerender(true);
     }
     
   })
   
+  const user = localStorage.getItem("kt-auth-react-v");
+  const userObject = user !== null ? JSON.parse(user):{};
+  const userId = userObject.id !== undefined ? userObject.id: 1   
+  
   function addReply(
     reply: string,
   ){
-    return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/replies`, {
+    return axios.post(`${REACT_APP_API_URL}/knowledgebase/question/reply`, {
       reply: reply,
       question_id: props.questionId,
       parent_question_reply_id: parentquestionId,
-      reply_by: 2
+      reply_by: userId
     })
     .then(response => {
       console.log(response);
@@ -208,7 +206,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
 
                     <div className='d-flex flex-column align-items-start justify-content-center'>
                       <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{item.createdBy.name}</span>
-                      <span className='text-muted fs-8 fw-bold lh-1'>{item.reply_date}</span>
+                      <span className='text-muted fs-8 fw-bold lh-1'>{new Date(item.reply_date).toLocaleString()}</span>
                     </div>
                   </div>
 
@@ -229,9 +227,9 @@ const Replies: React.FC<ReplyProps> = (props) => {
 
                 <div className='fs-5 fw-normal text-gray-800'>{item.reply}</div>
                 {
-                  item.chield_data.length ? 
+                  item.child_data.length ? 
                   <>
-                  {item.chield_data.map((items:any)=>
+                  {item.child_data.map((items:any)=>
                    
                     <div className="ps-7 mb-0 pe-5">
                     <div className={`border rounded p-2 p-lg-6 mb-10 mt-10 ${items.indent}`} key={items.id}>
@@ -249,7 +247,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
 
                             <div className='d-flex flex-column align-items-start justify-content-center'>
                               <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{items.createdBy.name}</span>
-                              <span className='text-muted fs-8 fw-bold lh-1'>{items.updated_date}</span>
+                              <span className='text-muted fs-8 fw-bold lh-1'>{new Date(items.updated_date).toLocaleString()}</span>
                             </div>
                           </div>
 
