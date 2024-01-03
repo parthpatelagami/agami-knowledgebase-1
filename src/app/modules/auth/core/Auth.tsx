@@ -59,10 +59,10 @@ const AuthInit: FC<WithChildren> = ({children}) => {
 
   // We should request user by authToken (IN OUR EXAMPLE IT'S API_TOKEN) before rendering the application
   useEffect(() => {
-    const requestUser = async (id: string) => {
+    const requestUser = async () => {
       try {
         if (!currentUser) {
-          const {data} = await getUserById(id)
+          const {data} = await getUserById()
           if (data) {
             setCurrentUser(data)
           }
@@ -77,10 +77,10 @@ const AuthInit: FC<WithChildren> = ({children}) => {
       }
     }
 
-    if (auth && auth.id) {
+    if (auth) {
       //const decodedRefreshToken = (auth.refreshToken) && jwtDecode(auth.refreshToken);
       //const userId = decodedRefreshToken && 'id' in decodedRefreshToken ? decodedRefreshToken.id +"" : "";
-      requestUser(auth.id)
+      requestUser()
     } else {
       logout()
       setShowSplashScreen(false)

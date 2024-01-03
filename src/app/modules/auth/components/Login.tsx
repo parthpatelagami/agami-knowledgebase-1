@@ -50,12 +50,11 @@ export function Login() {
         const companyId = (decodedRefreshToken as any)?.companyId ?? "";
 
         saveAuth({
-          id: userId,
           api_token,
           refreshToken,
         });
 
-        const { data: user } = await getUserById(userId);
+        const { data: user } = await getUserById();
 
         setCurrentUser(user)
              

@@ -102,7 +102,6 @@ export function Registration() {
           const companyId = (decodedRefreshToken as any)?.companyId ?? "";
 
           saveAuth({
-            id: userId,
             api_token,
             refreshToken,
           });
