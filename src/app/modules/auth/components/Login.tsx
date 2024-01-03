@@ -22,10 +22,7 @@ const loginSchema = Yup.object().shape({
     .required('Password is required'),
 })
 
-const initialValues = {
-  email: 'nimit.desai@agami-tech.com',
-  password: '1234',
-}
+const initialValues = {};
 
 /*
   Formik+YUP+Typescript:
@@ -89,16 +86,9 @@ export function Login() {
 
 
 
-      {formik.status ? (
+      {formik.status && (
         <div className='mb-lg-15 alert alert-danger'>
           <div className='alert-text font-weight-bold'>{formik.status}</div>
-        </div>
-      ) : (
-        <div className='mb-10 bg-light-info p-8 rounded'>
-          <div className='text-info'>
-            Use account <strong>nimit.desai@agami-tech.com</strong> and password <strong>1234</strong> to
-            continue.
-          </div>
         </div>
       )}
 
@@ -121,7 +111,9 @@ export function Login() {
         />
         {formik.touched.email && formik.errors.email && (
           <div className='fv-plugins-message-container'>
-            <span role='alert'>{formik.errors.email}</span>
+            <div className='fv-help-block'>
+               <span role='alert'>{formik.errors.email}</span>
+            </div>
           </div>
         )}
       </div>
@@ -131,6 +123,7 @@ export function Login() {
       <div className='fv-row mb-3'>
         <label className='form-label fw-bolder text-gray-900 fs-6 mb-0'>Password</label>
         <input
+          placeholder='Password'
           type='password'
           autoComplete='off'
           {...formik.getFieldProps('password')}
