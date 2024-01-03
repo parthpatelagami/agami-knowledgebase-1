@@ -24,16 +24,11 @@ const Question: React.FC = () => {
     const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replies/${id}`)
     setReplies(response.data.data);
     console.log("Response: ", response.data.data);
-
   }
 
   useEffect(() => {
     async function fetchQuesitonById() {
         const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/${id}`, {
-          headers: {
-              'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-              'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
-          }
       })
         .then(function (response: any) {
           console.log(response);

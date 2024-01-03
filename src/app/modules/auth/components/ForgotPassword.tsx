@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Yup from "yup";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { requestPassword } from "../core/_requests";
 
@@ -18,6 +18,7 @@ const forgotPasswordSchema = Yup.object().shape({
 });
 
 export function ForgotPassword() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [hasErrors, setHasErrors] = useState<boolean | undefined>(undefined);
   const formik = useFormik({
@@ -31,6 +32,7 @@ export function ForgotPassword() {
           .then(() => {
             setHasErrors(false);
             setLoading(false);
+            navigate("/auth/reset-password");
           })
           .catch(() => {
             setHasErrors(true);

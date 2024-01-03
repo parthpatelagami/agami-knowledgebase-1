@@ -44,11 +44,7 @@ export function Login() {
       setLoading(true)
       try {
         const { data: { api_token, refreshToken } } = await login(values.email, values.password);
-
-        const decodedRefreshToken = refreshToken ? jwtDecode(refreshToken) : null;
-        const userId = (decodedRefreshToken as any)?.id ?? "";
-        const companyId = (decodedRefreshToken as any)?.companyId ?? "";
-
+       
         saveAuth({
           api_token,
           refreshToken,

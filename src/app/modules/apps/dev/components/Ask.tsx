@@ -77,9 +77,6 @@ const Ask: React.FC = () => {
       product_id: product,
       visibility: visibility,
       tags: tags,
-      modified_by:1,
-      created_by:1,
-      company_id:1
     })
     .then(response => {
       console.log(response);
