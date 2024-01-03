@@ -90,15 +90,16 @@ export function Registration() {
             values.changepassword,
             values.otp,
           )
+                 
+          const { data: { api_token, refreshToken } } = await login(values.email, values.password);
           showSuccessToastMessage(
             "Register successfully with " + values.email + " email."
-          );          
-          const { data: { api_token, refreshToken } } = await login(values.email, values.password);
+          );   
           setLoading(false)
           
           const decodedRefreshToken = refreshToken ? jwtDecode(refreshToken) : null;
-          const userId = decodedRefreshToken?.id ?? "";
-          const companyId = decodedRefreshToken?.companyId ?? "";
+          const userId = (decodedRefreshToken as any)?.id ?? "";
+          const companyId = (decodedRefreshToken as any)?.companyId ?? "";
 
           saveAuth({
             id: userId,
@@ -106,14 +107,15 @@ export function Registration() {
             refreshToken,
           });
 
-          const userModelObject: UserModel | undefined =
-            decodedRefreshToken && {
-              id: userId,
+          const userModelObject: UserModel | undefined = decodedRefreshToken
+          ? {
+            id: userId,
               email: values.email,
               password: values.password,
               companyId,
               name: values.firstname,
-            };            
+            }
+            : undefined;            
           userModelObject && setCurrentUser(userModelObject)
         
         } catch (error) {

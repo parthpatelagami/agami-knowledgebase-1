@@ -46,8 +46,8 @@ export function Login() {
         const { data: { api_token, refreshToken } } = await login(values.email, values.password);
 
         const decodedRefreshToken = refreshToken ? jwtDecode(refreshToken) : null;
-        const userId = decodedRefreshToken?.id ?? "";
-        const companyId = decodedRefreshToken?.companyId ?? "";
+        const userId = (decodedRefreshToken as any)?.id ?? "";
+        const companyId = (decodedRefreshToken as any)?.companyId ?? "";
 
         saveAuth({
           id: userId,
@@ -57,16 +57,8 @@ export function Login() {
 
         const { data: user } = await getUserById(userId);
 
-        const userModelObject: UserModel | undefined = 
-          decodedRefreshToken && {
-            id: userId,
-            email: values.email,
-            password: values.password,
-            companyId,
-            name: user.name,
-          };
-        userModelObject && setCurrentUser(user);
-     
+        setCurrentUser(user)
+             
       } catch (error) {
         console.error("Login error:", error);
         saveAuth(undefined)
