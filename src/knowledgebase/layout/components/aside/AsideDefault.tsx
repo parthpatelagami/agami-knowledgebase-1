@@ -1,18 +1,43 @@
-
-
-import React, {FC} from 'react'
-import clsx from 'clsx'
-import {useLayout} from '../../core'
-import {Link, NavLink} from 'react-router-dom'
+import React, { useState, useEffect, FC } from "react";
+import clsx from "clsx";
+import { useLayout } from "../../core";
+import { Link, NavLink } from "react-router-dom";
+import axios from "axios";
 
 const AsideDefault: FC = () => {
-  const {config, classes} = useLayout()
-  const {aside} = config
+  const REACT_APP_API_URL =
+    import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
+  const { config, classes } = useLayout();
+  const { aside } = config;
+  const [countsData, setCountsData] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  async function getDashboardData() {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_API_URL}/knowledgebase/getDashboardData/`
+      );
+      if (response.status === 200) {
+        setCountsData(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle errors more effectively if needed
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getDashboardData();
+  }, []);
 
   return (
     <div
       id='kt_aside'
-      className={clsx('aside', classes.aside.join(' '), {'d-none': !aside.display})}
+      className={clsx("aside", classes.aside.join(" "), {
+        "d-none": !aside.display,
+      })}
       data-kt-drawer='true'
       data-kt-drawer-name='aside'
       data-kt-drawer-activate='{default: true, lg: false}'
@@ -38,14 +63,18 @@ const AsideDefault: FC = () => {
         >
           <div className='menu-item'>
             <div className='menu-content pb-2'>
-              <span className='menu-section text-muted text-uppercase fs-7 fw-bolder'>Public</span>
+              <span className='menu-section text-muted text-uppercase fs-7 fw-bolder'>
+                Public
+              </span>
             </div>
           </div>
 
           <div className='menu-item'>
             <NavLink to='/dashboard' className='menu-link'>
               <span className='menu-title'>All Questions</span>
-              <span className='menu-badge'>6,234</span>
+              <span className='menu-badge'>
+                {isLoading ? "Loading..." : countsData.all_questions_count}
+              </span>
             </NavLink>
           </div>
 
@@ -54,8 +83,6 @@ const AsideDefault: FC = () => {
               <span className='menu-title'>Search</span>
             </NavLink>
           </div>
-
-         
 
           <div className='menu-item'>
             <NavLink to='/apps/devs/ask' className='menu-link'>
@@ -79,17 +106,20 @@ const AsideDefault: FC = () => {
           <div className='menu-item'>
             <Link to='/apps/devs/questions' className='menu-link'>
               <span className='menu-title'>My Questions</span>
-              <span className='menu-badge'>24</span>
+              <span className='menu-badge'>
+                {isLoading ? "Loading..." : countsData.my_questions_count}
+              </span>
             </Link>
           </div>
           <div className='menu-item'>
             <Link to='/apps/devs/myarticle' className='menu-link'>
               <span className='menu-title'>My Articles</span>
-              <span className='menu-badge'>24</span>
+              <span className='menu-badge'>
+                {isLoading ? "Loading..." : countsData.my_article_count}
+              </span>
             </Link>
           </div>
 
-          
           <div className='menu-item'>
             <Link to='/' className='menu-link'>
               <span className='menu-title'>Saved</span>
@@ -111,38 +141,22 @@ const AsideDefault: FC = () => {
             </NavLink>
           </div>
 
-          <div className='menu-item'>
-            <Link to='/' className='menu-link'>
-              <span className='menu-title'>Account</span>
-              <span className='menu-badge'>1,400</span>
-            </Link>
-          </div>
-
-
-          <div className='menu-item'>
-            <Link to='/' className='menu-link'>
-              <span className='menu-title'>Backend Integration</span>
-              <span className='menu-badge'>235</span>
-            </Link>
-          </div>
-
-          <div className='menu-item'>
-            <Link to='/' className='menu-link'>
-              <span className='menu-title'>Suggestions</span>
-              <span className='menu-badge'>25</span>
-            </Link>
-          </div>
-
-          <div className='menu-item'>
-            <Link to='/' className='menu-link'>
-              <span className='menu-title'>Analysys</span>
-              <span className='menu-badge'>145</span>
-            </Link>
-          </div>
+          {isLoading ? (
+            <div>Loading Categories...</div>
+          ) : (
+            countsData.category_count.map((category) => (
+              <div className='menu-item' key={category.name}>
+                <NavLink to='/apps/category-management' className='menu-link'>
+                  <span className='menu-title'>{category.name}</span>
+                  <span className='menu-badge'>{category.count}</span>
+                </NavLink>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export {AsideDefault}
+export { AsideDefault };
