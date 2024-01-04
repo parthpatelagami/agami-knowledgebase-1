@@ -4,6 +4,7 @@ import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
 import { Question } from '../../../../app/modules/apps/dev/components/Question'
+import { useFormik } from 'formik'
 const REACT_APP_API_URL =
   import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
 
@@ -20,46 +21,114 @@ const Search: FC = () => {
   const emptyElement = useRef<HTMLDivElement | null>(null)
 
   const [searchData, setSearchData] = useState([]);
-  console.log("searchData", searchData)
+
+  const initialValues = {
+    questionStatus:true
+  };
+  
+  const [loading, setLoading] = useState(false);
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues:initialValues,
+    onSubmit: async (values) => {
+      console.log("values", values)
+      setLoading(true);
+    }
+  })
+
+  const [isSwitchOn, setSwitchOn] = useState(true)
+
+  const handleSwitchChange = () => {
+    setSwitchOn((prevSwitchOn) => !prevSwitchOn);
+    handleChange({
+      target: {
+        name: "questionStatus",
+        value: !(prevSwitchOn),
+      },
+    });
+  };
 
   const processs = (search: SearchComponent) => {
-    setTimeout(function () {
-      const number = Math.floor(Math.random() * 6) + 1
-      console.log("number", number)
+    setSwitchOn((updatedSwitchOn) => {
+      setTimeout(function () {
+        // Hide recently viewed
+        suggestionsElement.current!.classList.add('d-none');
+  
+        if (updatedSwitchOn) {
+          // Show results
+          resultsElement.current!.classList.remove('d-none');
+          // Hide empty message
+          emptyElement.current!.classList.add('d-none');
+  
 
-      // Hide recently viewed
-      suggestionsElement.current!.classList.add('d-none')
-
-      if (number === 3) {
-        // Hide results
-        resultsElement.current!.classList.add('d-none')
-        // Show empty message
-        emptyElement.current!.classList.remove('d-none')
-      } else {
-        // Show results
-        resultsElement.current!.classList.remove('d-none')
-        // Hide empty message
-        emptyElement.current!.classList.add('d-none')
-      }
-
-      // Complete search
-      search.complete()
-
-      axios.post(`${REACT_APP_API_URL}/knowledgebase/searchquestions`, {
-        // content: search.inputElement.value,
-        content: "Test",
-        companyId: 1
-      })
-      .then(function (response: any) {
-        if(response.status === 200) {
-          setSearchData(response.data.questions);
+        } else {
+          // Hide results
+          resultsElement.current!.classList.add('d-none');
+          // Show empty message
+          emptyElement.current!.classList.remove('d-none');
         }
-      })
-      .catch(function (error: any) {
-        console.log(error);
-      });
-    }, 1500)
-  }
+        const controller = new AbortController();
+        // Complete search
+        axios
+        .post(`${REACT_APP_API_URL}/knowledgebase/searchquestions`, {
+          signal:controller.signal,
+          content: search.inputElement.value,
+        })
+        .then(function (response: any) {
+          if (response.status === 200) {
+            setSearchData(response.data.questions);
+          }
+        })
+        .catch(function (error: any) {
+          console.log(error);
+        });
+        controller.abort();
+        search.complete();
+      }, 2000);
+  
+      // Return the updated value
+      return updatedSwitchOn;
+    });
+  };
+
+  // const processs = (search: SearchComponent) => {
+  //   setTimeout(function () {
+  //     const number = Math.floor(Math.random() * 6) + 1
+  //     console.log("number", number)
+
+  //     // Hide recently viewed
+  //     suggestionsElement.current!.classList.add('d-none')
+
+  //     if (number === 3) {
+  //       // Hide results
+  //       resultsElement.current!.classList.add('d-none')
+  //       // Show empty message
+  //       emptyElement.current!.classList.remove('d-none')
+  //     } else{
+  //       // Show results
+  //       resultsElement.current!.classList.remove('d-none')
+  //       // Hide empty message
+  //       emptyElement.current!.classList.add('d-none')
+  //       axios.post(`${REACT_APP_API_URL}/knowledgebase/searchquestions`, {
+  //         content: search.inputElement.value,
+  //         companyId: 1
+  //       })
+  //       .then(function (response: any) {
+  //         if(response.status === 200) {
+  //           setSearchData(response.data.questions);
+  //         }
+  //       })
+  //       .catch(function (error: any) {
+  //         console.log(error);
+  //       });
+  //     }
+
+  //     // Complete search
+  //     search.complete()
+
+      
+  //   }, 1500)
+  // }
 
   const clear = () => {
     // Show recently viewed
@@ -184,25 +253,31 @@ const Search: FC = () => {
                   Questions
                 </h3>
 
+                {searchData.length > 0 ? (
+  searchData.map((question) => (
+    <a
+      key={question._id}
+      href={`/knowledgebase/apps/devs/question/${question.question_id}`}
+      className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
+    >
+      <div className='symbol symbol-40px me-4'>
+        <div className="symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase">
+          Q
+        </div>          
+      </div>
+      <div className='d-flex flex-column justify-content-start fw-bold'>
+        <span className='fs-6 fw-bold'>{question.title}</span>
+        <span className='fs-7 fw-bold text-muted'>{question.description}</span>
+      </div>
+    </a>
+  ))
+) : (
+  <div className='pb-25 fw-bold text-center'>
+    <h3 className='text-gray-600 fs-5 mb-2'>No result found</h3>
+    <div className='text-muted fs-7'>Please try again with a different query</div>
+  </div>
+)}
 
-                {searchData.map((question) => (
-        <a
-          key={question._id} // Assuming _id is a unique identifier for each question
-          href='/apps/devs/questions'
-          className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
-        >
-                          <div className='symbol symbol-40px me-4'>
-                          <div className="symbol-label bg-light-warning fs-3 fw-bold text-warning text-uppercase">
-                          {/* {question.createdBy.name.charAt(0)} */}
-                          Q
-                        </div>          
-                                </div>
-          <div className='d-flex flex-column justify-content-start fw-bold'>
-            <span className='fs-6 fw-bold'>{question.title}</span>
-            <span className='fs-7 fw-bold text-muted'>{question.description}</span>
-          </div>
-        </a>
-      ))}
 
                 {/* <a
                   href='/#'
@@ -441,7 +516,7 @@ const Search: FC = () => {
             </div>
 
             <div ref={suggestionsElement} className='mb-4' data-kt-search-element='main'>
-              <div className='d-flex flex-stack fw-bold mb-4'>
+              {/* <div className='d-flex flex-stack fw-bold mb-4'>
                 <span className='text-muted fs-6 me-2'>Recently Searched:</span>
               </div>
 
@@ -454,7 +529,7 @@ Test 001                    </a>
                   </div>
                 </div>
 
-              </div>
+              </div> */}
             </div>
 
             <div ref={emptyElement} data-kt-search-element='empty' className='text-center d-none'>
@@ -623,7 +698,7 @@ Test 001                    </a>
             </div>
           </form>
 
-          <form className={`pt-1 ${menuState === 'preferences' ? '' : 'd-none'}`}>
+          <form className={`pt-1 ${menuState === 'preferences' ? '' : 'd-none'}`} onSubmit={handleSubmit}>
             <h3 className='fw-bold text-gray-900 mb-7'>Search Preferences</h3>
 
             <div className='pb-4 border-bottom'>
@@ -632,7 +707,10 @@ Test 001                    </a>
                   Questions
                 </span>
 
-                <input className='form-check-input' type='checkbox' value='1' defaultChecked />
+                <input className='form-check-input' type='checkbox' name='questionStatus'
+                          checked={isSwitchOn} 
+              onChange={handleSwitchChange} 
+ />
               </label>
             </div>
 

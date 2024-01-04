@@ -37,11 +37,8 @@ const AddCategory: React.FC = () => {
   ) {
     return axios.post(`${REACT_APP_API_URL}/knowledgebase/category`, {
       category_name: name,
-      active: status,
-      created_by:1,
-      company_id:1,
-modified_by:1
-    }
+      active: status
+        }
     , {
       headers: {
         // 'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
