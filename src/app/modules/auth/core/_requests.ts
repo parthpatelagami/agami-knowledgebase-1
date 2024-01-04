@@ -32,6 +32,7 @@ export function register(
     name: firstname,
     password,
     otp,
+    companyId:1,
   });
 }
 
