@@ -15,14 +15,13 @@ const AsideDefault: FC = () => {
   async function getDashboardData() {
     try {
       const response = await axios.get(
-        `${REACT_APP_API_URL}/knowledgebase/getDashboardData/`
+        `${REACT_APP_API_URL}/knowledgebase/getDashBoardData/`
       );
       if (response.status === 200) {
         setCountsData(response.data);
       }
     } catch (error) {
       console.error(error);
-      // Handle errors more effectively if needed
     } finally {
       setIsLoading(false);
     }
