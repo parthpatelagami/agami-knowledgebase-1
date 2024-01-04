@@ -22,6 +22,8 @@ const Question: React.FC = () => {
   const [replyCount, setReplyCount] = useState<number>(0);
   const [renderPage,setRenderPage] = useState<boolean>(false);
   const [questionId, setQuestionId] = useState(id)
+  
+  
   async function fetchAllReplyCount() {
     const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/replycount/${id}`)
     setReplyCount(response.data.data);
@@ -29,9 +31,9 @@ const Question: React.FC = () => {
 
   async function fetchQuesitonById() {
     const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/${id}`, {
-  })
+    })
     .then(function (response: any) {
-      console.log(response);
+      // console.log(response);
       if(response.status == 200) {
         console.log(response.data.data)
         setQuestion(response.data.data)
@@ -69,10 +71,7 @@ const Question: React.FC = () => {
     
   })
   
-  const user = localStorage.getItem("kt-auth-react-v");
-  const userObject = user !== null ? JSON.parse(user):{};
-  const userId = userObject.id !== undefined ? userObject.id: 1
-  
+
   function addReply(
     reply: string,
   ){
@@ -80,7 +79,7 @@ const Question: React.FC = () => {
       reply: reply,
       question_id: id,
       parent_question_reply_id: null,
-      reply_by: userId
+      // reply_by: userId
     })
     .then(response => {
       console.log(response);

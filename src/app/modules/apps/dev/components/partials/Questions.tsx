@@ -67,7 +67,7 @@ const Questions: FC<QuestionsProps> = (props) => {
         .then(function (response: any) {
           console.log(response);
           if(response.status == 200) {
-            console.log(response.data)
+            // console.log(response.data)
              setQuestions(response.data.data)
           }
         })
@@ -84,7 +84,7 @@ const Questions: FC<QuestionsProps> = (props) => {
         .then(function (response: any) {
           console.log(response);
           if(response.status == 200) {
-            console.log(response.data)
+            // console.log(response.data)
              setQuestions(response.data.data)
           }
         })

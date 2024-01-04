@@ -152,9 +152,6 @@ const Replies: React.FC<ReplyProps> = (props) => {
     
   })
   
-  const user = localStorage.getItem("kt-auth-react-v");
-  const userObject = user !== null ? JSON.parse(user):{};
-  const userId = userObject.id !== undefined ? userObject.id: 1   
   
   function addReply(
     reply: string,
@@ -163,10 +160,10 @@ const Replies: React.FC<ReplyProps> = (props) => {
       reply: reply,
       question_id: props.questionId,
       parent_question_reply_id: parentquestionId,
-      reply_by: userId
+      // reply_by: userId
     })
     .then(response => {
-      console.log(response);
+      // console.log(response);
       setTimeout(() => {
         setLoading(false)
       }, 1000)
