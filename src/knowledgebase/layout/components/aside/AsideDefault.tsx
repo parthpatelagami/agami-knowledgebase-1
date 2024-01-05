@@ -78,6 +78,15 @@ const AsideDefault: FC = () => {
           </div>
 
           <div className='menu-item'>
+            <NavLink to='/articles' className='menu-link'>
+              <span className='menu-title'>All Articles</span>
+              <span className='menu-badge'>
+                {isLoading ? "Loading..." : countsData.all_articles_count}
+              </span>
+            </NavLink>
+          </div>
+
+          <div className='menu-item'>
             <NavLink to='/apps/devs/search' className='menu-link'>
               <span className='menu-title'>Search</span>
             </NavLink>

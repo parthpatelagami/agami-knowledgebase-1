@@ -8,6 +8,7 @@ import {DisableSidebar} from '../../knowledgebase/layout/core'
 import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {WithChildren} from '../../knowledgebase/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import { ArticleWrapper } from '../pages/articles/ArticleWrapper'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -25,6 +26,7 @@ const PrivateRoutes = () => {
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
         {/* Pages */}
         <Route path='dashboard' element={<DashboardWrapper />} />
+        <Route path='articles' element={<ArticleWrapper />} />
         <Route path='builder' element={<BuilderPageWrapper />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}
