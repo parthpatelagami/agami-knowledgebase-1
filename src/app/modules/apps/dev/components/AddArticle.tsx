@@ -1,12 +1,15 @@
 
 
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect,useRef, useMemo} from 'react'
 import {TextFormatting} from './partials/TextFormatting'
 import {EnableSidebar} from '../../../../../knowledgebase/layout/core'
 import axios from "axios"
 import { useFormik } from 'formik'
 import { ArticleSchema } from '../../../../../knowledgebase/schemas'
 import { useNavigate } from 'react-router-dom';
+import JoditEditor from 'jodit-react';
+import { config } from 'process'
+import { JoditComponent } from '../JoditComponent'
 
 interface Product {
   id: number;
@@ -21,15 +24,17 @@ const Article: React.FC = () => {
   const [textFormatting, setTextFormatting] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [content, setContent] = useState('')
+  const editor=useRef(null)
   let navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
         const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/products`, {
-        headers: {
-            'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-            'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
-        }
+        // headers: {
+        //     'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+        //     'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+        // }
     })
       .then(function (response: any) {
         console.log(response);
@@ -44,6 +49,7 @@ const Article: React.FC = () => {
       });
     }
     fetchProducts();
+    
   }, []);
 
   const initialValues = {
@@ -59,6 +65,7 @@ const Article: React.FC = () => {
     initialValues:initialValues,
     validationSchema:ArticleSchema,
     onSubmit: async (values) => {
+      values.article=content;
       setLoading(true);
       addArticle(values.title,values.article,values.product,values.public,values.tags)
       navigate("/apps/devs/myarticle");
@@ -77,15 +84,12 @@ const Article: React.FC = () => {
       description: description,
       product_id: product,
       visibility: visibility,
-      tag_id: 1,
-      modified_by:1,
-      created_by:1,
-      company_id:1
+      tag_id: 1
     }, {
-      headers: {
-        'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-        'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
-      }
+      // headers: {
+      //   'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+      //   'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+      // }
     })
     .then(response => {
       console.log(response);
@@ -136,7 +140,7 @@ const Article: React.FC = () => {
           </label>
 
           <div className="fv-row">
-            <textarea
+            {/* <textarea
               className="form-control mb-3"
               rows={10}
               name="article"
@@ -145,7 +149,8 @@ const Article: React.FC = () => {
               value={values.article}
               onChange={handleChange}
               onBlur={handleBlur}
-            ></textarea>
+            ></textarea> */}
+            <JoditComponent placeholder="hello" content={content} setContent={setContent}/>
             {errors.article && touched.article ? (
               <p className="form-error" style={{ color: "red" }}>
                 {errors.article}

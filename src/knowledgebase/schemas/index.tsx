@@ -6,7 +6,7 @@ export const questionSchema = Yup.object({
 })
 export const ArticleSchema = Yup.object({
     title:Yup.string().min(2).required("Please enter Article Title"),
-    article:Yup.string().min(2).required("Please enter Article Description")
+    //article:Yup.string().min(2).required("Please enter Article Description")
 })
 
 export const CategorySchema = Yup.object({
