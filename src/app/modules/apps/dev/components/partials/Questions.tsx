@@ -79,7 +79,7 @@ const Questions: FC<QuestionsProps> = (props) => {
       }
 
       async function fetchQuestionsByUser() {
-        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/questions/users/1`, {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/users/questions`, {
       })
         .then(function (response: any) {
           console.log(response);
