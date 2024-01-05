@@ -23,7 +23,7 @@ export const JoditComponent = ({placeholder,content,setContent}:propstype) => {
             "showXPathInStatusbar": false,
             "placeholder": placeholder || 'Start typings...',
             "uploader": {
-              url: 'http://192.168.1.179:3001/knowledgebase/upload',
+              url: 'http://localhost:3001/knowledgebase/upload',
               isSuccess: function (resp:any) {
                 return true;
               },
