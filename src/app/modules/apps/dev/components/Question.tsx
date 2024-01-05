@@ -192,7 +192,7 @@ const Question: React.FC = () => {
             className='form-control'
             rows={6}
             placeholder='Your reply here..'
-            maxLength={1000}
+            // maxLength={1000}
             value={formik.values.reply}
             onChange={formik.handleChange}
             data-kt-autosize='true'
@@ -217,7 +217,7 @@ const Question: React.FC = () => {
         {textFormatting && <TextFormatting />}
       </form>
       
-      {replyCount > 0 ? <><Replies questionId={questionId} isRenderPage={renderPage} /></>:(<><h2 className='fw-bolder text-gray-900 mb-10'>Replies({replyCount})</h2></>)}      
+      {replyCount > 0 ? <><Replies questionId={questionId} replyCount={replyCount} isRenderPage={renderPage} /></>:(<><h2 className='fw-bolder text-gray-900 mb-10'>Replies({replyCount})</h2></>)}      
     </EnableSidebar>));
 }
 
