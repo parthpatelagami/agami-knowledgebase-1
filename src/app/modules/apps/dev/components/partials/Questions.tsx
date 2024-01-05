@@ -182,7 +182,7 @@ const Questions: FC<QuestionsProps> = (props) => {
           );
         })}
         </div>
-      <div className='mb-10'>
+      {/* <div className='mb-10'>
         {questions1.map((item, i) => {
           return (
             <Fragment key={`question_${i}`}>
@@ -251,7 +251,7 @@ const Questions: FC<QuestionsProps> = (props) => {
             </Fragment>
           )
         })}
-      </div>
+      </div> */}
 
       <div className='d-flex flex-center mb-0'>
         <a

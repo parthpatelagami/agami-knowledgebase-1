@@ -1,9 +1,7 @@
 import React from 'react'
 import { useState , useEffect} from 'react'
 import {toAbsoluteUrl} from '../../../../../../knowledgebase/helpers'
-import { ReplyBox }  from './ReplyBox'
 import { TextFormatting } from './TextFormatting'
-import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik'
 import axios from 'axios'
 
@@ -17,131 +15,44 @@ const Replies: React.FC<ReplyProps> = (props) => {
   const [textFormatting, setTextFormatting] = useState<boolean>(false)
   const [data, setData] = useState<any>([])
   const [loading, setLoading ] = useState(false)
-  let navigate = useNavigate();
   const [parentquestionId, setParentquestionId] = useState(null);
+  const [offset, setOffset] = useState(0);
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
   const [rerender, setRerender] = useState(false)
-  const replies = [
-    {
-      message:
-        'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-      author: 'Sandra Piquet',
-      date: '24 minutes ago',
-      avatar: 'media/avatars/300-2.jpg',
-      upvotes: '',
-      indent: '',
-      messagewithmessage:[
-        {
-          id: 1,
-          message:
-            'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-          author: 'Sandra Piquet',
-          date: '24 minutes ago',
-          avatar: 'media/avatars/300-12.jpg',
-          upvotes: '',
-          indent: '',
-        },
-        {
-          id: 2,
-          message:
-            'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-          author: 'Sandra Piquet',
-          date: '24 minutes ago',
-          avatar: 'media/avatars/300-2.jpg',
-          upvotes: '',
-          indent: '',
-        },
+  const [limit, setLimit] = useState(0)
 
-      ]
-    },
-    {
-      message:
-        'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-      author: 'Sandra Piquet',
-      date: '24 minutes ago',
-      avatar: 'media/avatars/300-12.jpg',
-      upvotes: '6',
-      indent: '',
-      messagewithmessage:[]
-    },
-    {
-      message:
-        'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-      author: 'Sandra Piquet',
-      date: '24 minutes ago',
-
-      upvotes: '4',
-      indent: '',
-      messagewithmessage:[
-        {
-          id: 1,
-          message:
-            'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-          author: 'Sandra Piquet',
-          date: '24 minutes ago',
-          avatar: 'media/avatars/300-12.jpg',
-          upvotes: '',
-          indent: '',
-        }
-      ]
-    },
-    {
-      message:
-        'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-      author: 'Niko Roseberg',
-      date: '1 day ago',
-      avatar: 'media/avatars/300-20.jpg',
-      upvotes: '',
-      indent: '',
-      messagewithmessage:[]
-    },
-    {
-      message:
-        'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-      author: 'Sandra Piquet',
-      date: '24 minutes ago',
-      avatar: 'media/avatars/300-20.jpg',
-      upvotes: '',
-      indent: '',
-      messagewithmessage:[
-        {
-          id: 1,
-          message:
-            'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-          author: 'Sandra Piquet',
-          date: '24 minutes ago',
-          avatar: 'media/avatars/300-2.jpg',
-          upvotes: '',
-          indent: '',
-        },
-        {
-          id: 2,
-          message:
-            'I’ve been doing some ajax request, to populate a inside drawer, the content of that drawer has a sub menu, that you are using in list and all card toolbar.',
-          author: 'Sandra Piquet',
-          date: '24 minutes ago',
-          avatar: 'media/avatars/300-20.jpg',
-          upvotes: '',
-          indent: '',
-        },
-
-      ]
-    }
-  ]
-  useEffect(()=>{
-    
-    async function fetchreplydata() {
-      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}`)
-      // console.log("Reply data: ", response.data.data);
-      setData(response.data.data);
-    }
-    fetchreplydata();
-    setRerender(false)
-  },[props.isRenderPage, rerender])
   
+  useEffect(()=>{   
+
+      async function fetchreplydata() {
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}/5/0`)
+        const data = await response.data.data; 
+        setData(data);
+      }
+      fetchreplydata(); 
+      setRerender(false)
+      setOffset(0)
+      setLimit(0)
+  },[props.isRenderPage, rerender])
+
+  useEffect(()=>{    
+
+    async function fetchreplydata() {      
+      if(limit > 0 && offset > 0){
+
+        const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/question/reply/${props.questionId}/${limit}/${offset}`)
+        const data = await response.data.data;         
+        setData((prev: any) => [...prev, ...data]);
+      }      
+    }
+    fetchreplydata(); 
+  },[offset])
+  
+
   const initialValues = {
     reply: ""
   };
+  
   const formik  = useFormik({
     initialValues:initialValues,
     onSubmit: async (values) => {
@@ -180,8 +91,9 @@ const Replies: React.FC<ReplyProps> = (props) => {
   }
 
 
-  const handlePagination = (e:any)=>{
-    console.log("Event: ",e)
+  const handlePagination = ()=>{
+    setOffset((prev)=>prev+5)
+    setLimit(5)
   }
 
   
@@ -192,7 +104,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
       <h2 className='fw-bolder text-gray-900 mb-10'>Replies({props.replyCount})</h2>
 
       <div className='mb-10'>
-      <div className='overflow-auto pe-8'style={{maxHeight:"500px"}}>
+      <div className='overflow-y-auto pe-8'style={{maxHeight:"500px"}}>
         {data.map((item:any, i:number) => {
           return (            
             <div className={`border rounded p-2 p-lg-6 mb-10`} key={i}>
@@ -323,14 +235,20 @@ const Replies: React.FC<ReplyProps> = (props) => {
           
           )
         })}
-        <div className='d-flex flex-center mb-0'>
-        <button
-          onClick={handlePagination}
-          className='btn btn-icon btn-light btn-active-light-primary h-30px w-1000px fw-bold fs-6 mx-2'
-        >
-          View {props.replyCount} remaining older comments
-        </button>
-      </div>
+        {
+          ((props.replyCount)-(data.length)) > 0 ? 
+          <div className='d-flex flex-center mb-0'>
+            <button
+              onClick={handlePagination}
+              className='btn btn-icon btn-light btn-active-light-primary h-30px w-1000px fw-bold fs-6 mx-2'
+            >
+              View {(props.replyCount)-(data.length)} Reply
+            </button>
+          </div> 
+          : 
+          <></>
+        }
+        
         </div>
         
       </div>
