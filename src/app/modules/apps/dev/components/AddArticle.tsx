@@ -150,7 +150,7 @@ const Article: React.FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             ></textarea> */}
-            <JoditComponent placeholder="hello" content={content} setContent={setContent}/>
+            <JoditComponent placeholder="Enter Content" content={content} setContent={setContent}/>
             {errors.article && touched.article ? (
               <p className="form-error" style={{ color: "red" }}>
                 {errors.article}

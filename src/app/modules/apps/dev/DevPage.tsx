@@ -9,6 +9,7 @@ import { Article } from './components/AddArticle'
 import { Articles } from './components/Article'
 import { AddCategory } from './components/AddCategory'
 import {EditCategory} from './components/EditCategory'
+import { ViewArticles } from './components/ViewArticles'
 
 const devBreadCrumbs: Array<PageLink> = [
   {
@@ -71,6 +72,15 @@ const DevPage = () => {
             <>
               <PageTitle breadcrumbs={devBreadCrumbs}>Group chat</PageTitle>
               <Question/>
+            </>
+          }
+        />
+        <Route
+          path='viewarticle/:id'
+          element={
+            <>
+              <PageTitle breadcrumbs={devBreadCrumbs}>Group chat</PageTitle>
+              <ViewArticles/>
             </>
           }
         />

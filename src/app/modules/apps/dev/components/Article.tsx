@@ -16,6 +16,7 @@ const Articles: FC = (props:any) => {
 //     title: string;
 
 // }]
+console.log("Articles by mustafa")
   const [Article,setArticles]=useState<any>([])
   useEffect(()=>{
     async function fetchArticlesByUser() {
@@ -34,7 +35,7 @@ const Articles: FC = (props:any) => {
       });
     }
     async function fetchArticles() {
-      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/articles/user`, {
+      const response = await axios.get(`${REACT_APP_API_URL}/knowledgebase/articles`, {
   })
     .then(function (response: any) {
       console.log(response);
@@ -48,10 +49,10 @@ const Articles: FC = (props:any) => {
     .finally(function () {
     });
   }
-    if(props.type==="all"){
-      fetchArticlesByUser();
-    }else{
+    if(props.type=="all"){
       fetchArticles();
+    }else{
+      fetchArticlesByUser();
     }
     
   },[])
@@ -64,7 +65,9 @@ const Articles: FC = (props:any) => {
               <div className='mb-0'>
                 <div className='d-flex align-items-center mb-4'>
                   <Link
-                    to='/apps/devs/question'
+                    to={{
+                      pathname: `/apps/devs/viewarticle/${item.id}`,
+                    }}
                     className='fs-2 fw-bolder text-gray-900 text-hover-primary me-1'
                   >
                     {item.title}

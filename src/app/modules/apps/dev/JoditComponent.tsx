@@ -16,7 +16,7 @@ export const JoditComponent = ({placeholder,content,setContent}:propstype) => {
                 "background": "black",
                 "color": "white"
               }:{},
-            "buttons": "bold,italic,underline,strikethrough,source,fullsize",
+            "buttons": "bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,lineHeight,superscript,subscript,brush,file,image,video,cut,copy,paste,print,preview,fullsize,source",
             "toolbarAdaptive": false,
             "showCharsCounter": false,
             "showWordsCounter": false,
