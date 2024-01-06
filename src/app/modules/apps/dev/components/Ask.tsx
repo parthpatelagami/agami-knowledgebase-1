@@ -49,7 +49,7 @@ const Ask: React.FC = () => {
   const initialValues = {
     title: "",
     question: "",
-    product: "0",
+    product: "",
     tags: "",
     public:'1'
   };
@@ -188,6 +188,11 @@ const Ask: React.FC = () => {
               <option value={product.id}>{product.product_name}</option>
             ))}
           </select>
+          {errors.product && touched.product ? (
+            <p className="form-error" style={{ color: "red" }}>
+              {errors.product}
+            </p>
+          ) : null}
         </div>
 
         <div className="d-flex flex-column mb-8 fv-row">
