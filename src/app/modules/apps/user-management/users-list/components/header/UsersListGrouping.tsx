@@ -3,6 +3,8 @@ import {QUERIES} from '../../../../../../../knowledgebase/helpers'
 import {useListView} from '../../core/ListViewProvider'
 import {useQueryResponse} from '../../core/QueryResponseProvider'
 import {deleteSelectedUsers} from '../../core/_requests'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UsersListGrouping = () => {
   const {selected, clearSelected} = useListView()
@@ -15,6 +17,9 @@ const UsersListGrouping = () => {
       // ✅ update detail view directly
       queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`])
       clearSelected()
+      toast.success('Category has been successfully Deleted!', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     },
   })
 

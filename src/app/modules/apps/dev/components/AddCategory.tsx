@@ -7,6 +7,8 @@ import axios from "axios"
 import { useFormik } from 'formik'
 import { CategorySchema } from '../../../../../knowledgebase/schemas'
 import { useNavigate } from 'react-router-dom';
+import {  toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const REACT_APP_API_URL =
   import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
@@ -20,43 +22,49 @@ const AddCategory: React.FC = () => {
     name: "",
     status:'1'
   };
-  
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues:initialValues,
     validationSchema:CategorySchema,
     onSubmit: async (values) => {
+      console.log(values)
       setLoading(true);
-      addCategory(values.name,values.status)
-    }
-  })
-  
-  function addCategory(
-    name: string,
-    status:string
-  ) {
-    return axios.post(`${REACT_APP_API_URL}/knowledgebase/category`, {
-      category_name: name,
-      active: status
-        }
-    , {
-      headers: {
-        // 'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
-        // 'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+
+      try {
+        const response = await axios.post(
+          `${REACT_APP_API_URL}/knowledgebase/category`,
+          {
+            category_name: values.name,
+            active: values.status,
+          },
+          {
+            headers: {
+              // 'x-refresh-token': 'a1e87553-2ee2-441e-993b-876d01ea9d3d',
+              // 'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pbWl0LmRlc2FpQGFnYW1pLXRlY2guY29tIiwiaWQiOjEsImlhdCI6MTcwMzIyODUxNiwiZXhwIjoxNzAzMjI5NDE2fQ.02ZF5q5mAW-S7fbY8EbfuqysdoG2aXnYuwdGWtG5PGA'
+            },
+          }
+        );
+    
+        console.log(response);
+    
+        toast.success('Category has been successfully Added!', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+    
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+    
+        navigate('/apps/category-management/category');
+      } catch (error) {
+        toast.error('Something Went Wrong!', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        console.error(error);
       }
-    })
-    .then(response => {
-      console.log(response);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000)
-      alert('Category has been successfully Added!')
-      navigate("/apps/category-management/category");
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+    },
+    }
+  )
 
     const backToCategory = () => {
        navigate('/apps/category-management/category')
@@ -122,9 +130,9 @@ const AddCategory: React.FC = () => {
             </span>
           </label>
           <button className="btn btn-primary">Submit</button>
-        </div>
+                </div>
       </form>
-    </EnableSidebar>
+       </EnableSidebar>
   );
 }
 

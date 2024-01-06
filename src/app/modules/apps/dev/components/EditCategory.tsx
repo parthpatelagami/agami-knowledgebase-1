@@ -7,6 +7,9 @@ import axios from "axios"
 import { useFormik } from 'formik'
 import { CategorySchema } from '../../../../../knowledgebase/schemas'
 import { useNavigate,useParams } from 'react-router-dom';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import moment from 'moment'
 
 const REACT_APP_API_URL =
   import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
@@ -88,7 +91,7 @@ const EditCategory: React.FC = () => {
     return axios.put(`${REACT_APP_API_URL}/knowledgebase/category/${id}`, {
       category_name: name,
       active: isSwitchOn ? "1" : "0",
-      modified_by:1,
+      modified_date: moment().format("YYYY-MM-DD")
     }
     , {
       headers: {
@@ -101,10 +104,16 @@ const EditCategory: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 1000)
-      alert('Category has been successfully Edited!')
+      toast.success('Category has been successfully Edited!', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+  
       navigate("/apps/category-management/category");
     })
     .catch(error => {
+      toast.error('Something Went Wrong!', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       console.error(error);
     });
   }

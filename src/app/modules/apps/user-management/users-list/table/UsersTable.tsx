@@ -18,11 +18,9 @@ const UsersTable = () => {
   import.meta.env.REACT_APP_API_URL || "http://localhost:3001";
 
   const users = useQueryResponseData()
-  console.log("users", users)
   const isLoading = useQueryResponseLoading()
 
   const data = useMemo(() => users, [users])
-  console.log(data);
   const columns = useMemo(() => usersColumns, [])
   const {getTableProps, getTableBodyProps, headers, rows, prepareRow} = useTable({
     columns,

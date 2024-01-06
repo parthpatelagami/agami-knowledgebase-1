@@ -1,6 +1,5 @@
 import {Column} from 'react-table'
 import {UserInfoCell} from './UserInfoCell'
-import {UserSwitchCell} from './UserSwitchCell'
 import {UserLastLoginCell} from './UserLastLoginCell'
 import {UserTwoStepsCell} from './UserTwoStepsCell'
 import {UserActionsCell} from './UserActionsCell'
@@ -19,7 +18,6 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Header: (props) => <UserCustomHeader tableProps={props} title='Name' className='min-w-125px' />,
     id: 'category_name',
     Cell: ({ ...props }) => {
-      console.log("props", props.data); // Log props.data to the console
       return <UserInfoCell user={props.data[props.row.index]} />;
     },
   },

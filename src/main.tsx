@@ -3,6 +3,9 @@ import {createRoot} from 'react-dom/client'
 import axios from 'axios'
 import {Chart, registerables} from 'chart.js'
 import {QueryClient, QueryClientProvider} from 'react-query'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // import {ReactQueryDevtools} from 'react-query/devtools'
 // Apps
 import {MetronicI18nProvider} from './knowledgebase/i18n/Metronici18n'
@@ -42,6 +45,7 @@ if (container) {
       <MetronicI18nProvider>
         <AuthProvider>
           <AppRoutes />
+          <ToastContainer />
         </AuthProvider>
       </MetronicI18nProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}

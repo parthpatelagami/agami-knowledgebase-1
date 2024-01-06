@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react'
 import {SearchComponent} from '../../../assets/ts/components'
 import {KTIcon, toAbsoluteUrl} from '../../../helpers'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link, NavLink } from 'react-router-dom'
 import axios from "axios"
 import { Question } from '../../../../app/modules/apps/dev/components/Question'
 import { useFormik } from 'formik'
@@ -10,14 +10,11 @@ const REACT_APP_API_URL =
 
 const Search: FC = () => {
   const [menuState, setMenuState] = useState<'main' | 'advanced' | 'preferences'>('main')
-  console.log("menuState", menuState)
   const element = useRef<HTMLDivElement | null>(null)
-  console.log("element", element)
   const wrapperElement = useRef<HTMLDivElement | null>(null)
   const resultsElement = useRef<HTMLDivElement | null>(null)
-  console.log("resultsElement",resultsElement)
+  console.log("resultsElement", resultsElement)
   const suggestionsElement = useRef<HTMLDivElement | null>(null)
-  console.log("suggestionsElement",suggestionsElement)
   const emptyElement = useRef<HTMLDivElement | null>(null)
 
   const [searchData, setSearchData] = useState([]);
@@ -31,7 +28,6 @@ const Search: FC = () => {
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues:initialValues,
     onSubmit: async (values) => {
-      console.log("values", values)
       setLoading(true);
     }
   })
@@ -142,7 +138,6 @@ const Search: FC = () => {
   useEffect(() => {
     // Initialize search handler
     const searchObject = SearchComponent.createInsance('#kt_header_search')
-    console.log("searchObject", searchObject)
 
     // Search handler
     searchObject!.on('kt.search.process', processs)
@@ -247,7 +242,7 @@ const Search: FC = () => {
               </div>
             </form>
 
-            <div ref={resultsElement} data-kt-search-element='results' className='d-none'>
+            <div ref={resultsElement} className='d-none'>
               <div className='scroll-y mh-200px mh-lg-350px'>
                 <h3 className='fs-5 text-muted m-0 pb-5' data-kt-search-element='questions-title'>
                   Questions
@@ -256,8 +251,7 @@ const Search: FC = () => {
                 {searchData.length > 0 ? (
   searchData.map((question) => (
     <a
-      key={question._id}
-      href={`/knowledgebase/apps/devs/question/${question.question_id}`}
+        href={`/knowledgebase/apps/devs/question/${question.question_id}`}
       className='d-flex text-gray-900 text-hover-primary align-items-center mb-5'
     >
       <div className='symbol symbol-40px me-4'>
