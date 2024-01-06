@@ -49,7 +49,7 @@ const Ask: React.FC = () => {
   const initialValues = {
     title: "",
     question: "",
-    product: "",
+    product: "0",
     tags: "",
     public:'1'
   };
