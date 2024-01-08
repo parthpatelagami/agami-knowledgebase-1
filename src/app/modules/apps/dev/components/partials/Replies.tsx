@@ -206,7 +206,7 @@ const Replies: React.FC<ReplyProps> = (props) => {
 
                             <div className='d-flex flex-column align-items-start justify-content-center'>
                               <span className='text-gray-800 fs-7 fw-bold lh-1 mb-2'>{items.createdBy.name}</span>
-                              <span className='text-muted fs-8 fw-bold lh-1'>{new Date(items.updated_date).toLocaleString()}</span>
+                              <span className='text-muted fs-8 fw-bold lh-1'>{new Date(items.reply_date).toLocaleString()}</span>
                             </div>
                           </div>
 
