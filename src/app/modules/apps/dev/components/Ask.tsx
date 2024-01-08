@@ -8,6 +8,7 @@ import { useFormik } from 'formik'
 import { questionSchema } from '../../../../../knowledgebase/schemas'
 import { useNavigate } from 'react-router-dom'
 import { _steppedLineTo } from 'chart.js/helpers'
+import {showSuccessToastMessage,showErrorToastMessage} from "../../../widgets/components/Toaster"
 
 interface Product {
   id: number;
@@ -80,19 +81,19 @@ const Ask: React.FC = () => {
     })
     .then(response => {
       console.log(response);
+      showSuccessToastMessage("Question Added Successfully")
       setTimeout(() => {
         setLoading(false)
       }, 1000)
       navigate('/dashboard')
-      alert('Question Added Successfully')
     })
     .catch(error => {
       console.error(error);
+      showErrorToastMessage("ERROR! An error occured adding question: "+error)
       setTimeout(() => {
         setLoading(false)
       }, 1000)
       navigate('/apps/devs/ask')
-      alert('ERROR, Please try again')
     });
   }
 

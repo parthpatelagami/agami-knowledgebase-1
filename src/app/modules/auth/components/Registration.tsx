@@ -8,7 +8,7 @@ import { register,generateOTP,login} from '../core/_requests'
 import {Link} from 'react-router-dom'
 import {PasswordMeterComponent} from '../../../../knowledgebase/assets/ts/components'
 import {useAuth} from '../core/Auth'
-import { ToastContainer, toast } from "react-toastify";
+import {showSuccessToastMessage,showErrorToastMessage} from "../../widgets/components/Toaster"
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import { setAuth } from '..'
@@ -70,7 +70,7 @@ export function Registration() {
           setIsotpsend(true);
           setSubmitting(false)
           setLoading(false)
-          // showSuccessToastMessage("Sent OTP Successfully to "+formik.values.email)
+          showSuccessToastMessage("Sent OTP Successfully to "+formik.values.email)
         } catch (error) {
           setIsotpsend(false);
           console.error(error)
@@ -149,18 +149,6 @@ export function Registration() {
   useEffect(() => {
     PasswordMeterComponent.bootstrap()
   }, [])
-
-  const showSuccessToastMessage = (message:string) => {
-    toast.success(message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
-
-  const showErrorToastMessage = (message:string) => {
-    toast.error(message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
 
   return (
     <form
@@ -383,11 +371,9 @@ export function Registration() {
     <div className="text-muted">
       {isoptsend && formik.isValid && (<a href="#" className="link-primary p-0 btn" onClick={handleResendOTP}>Resend OTP</a> )}
       {isoptsend && !formik.isValid && (<a href="#" className="link-primary p-0 btn disabled" onClick={handleResendOTP}>Resend OTP</a> )}      
-      <ToastContainer />
     </div>
     <div className="text-muted">
       {isoptsend && (<p className="text-success">OTP Send Successfully to {formik.values.email}</p>)}
-      <ToastContainer />
     </div>
   </div>
       {/* end::Form group */}
