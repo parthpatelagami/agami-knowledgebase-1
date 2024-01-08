@@ -8,6 +8,7 @@ import {Replies} from './partials/Replies'
 import axios from "axios"
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik'
+import { ReplySchema } from '../../../../../knowledgebase/schemas'
 
 const Question: React.FC = () => {
 
@@ -60,8 +61,9 @@ const Question: React.FC = () => {
     reply: ""
   };
 
-  const formik  = useFormik({
+  const { values , errors, handleChange, handleSubmit}  = useFormik({
     initialValues:initialValues,
+    validationSchema: ReplySchema,
     onSubmit: async (values) => {
       setLoading(true)
       addReply(values.reply)
@@ -185,7 +187,7 @@ const Question: React.FC = () => {
 
       <div className='separator separator-dashed border-gray-300 mt-8 mb-10'></div>
 
-      <form id='kt_devs_reply_form' onSubmit={formik.handleSubmit} className='form mb-10'>
+      <form id='kt_devs_reply_form' onSubmit={handleSubmit} className='form mb-10'>
         <div className='form-group mb-2'>
           <textarea
             name='reply'
@@ -193,10 +195,15 @@ const Question: React.FC = () => {
             rows={6}
             placeholder='Your reply here..'
             // maxLength={1000}
-            value={formik.values.reply}
-            onChange={formik.handleChange}
+            value={values.reply}
+            onChange={handleChange}
             data-kt-autosize='true'
           />
+          {errors.reply ? (
+            <p className="form-error" style={{ color: "red" }}>
+              {errors.reply}
+            </p>
+          ) : null}
         </div>
 
         <div className='d-flex align-items-center justify-content-between py-2 mb-5'>

@@ -13,3 +13,7 @@ export const ArticleSchema = Yup.object({
 export const CategorySchema = Yup.object({
     name:Yup.string().min(2).required("Please enter Name"),
 })
+
+export const ReplySchema = Yup.object({
+    reply:Yup.string().required("Please Enter Reply")
+})
