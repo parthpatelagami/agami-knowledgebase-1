@@ -41,7 +41,6 @@ const deleteUser = (userId: ID): Promise<void> => {
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
   const requests = userIds.map((id) => axios.delete(`${REACT_APP_API_URL}/knowledgebase/category/${id}`));
-  console.log(requests);
   return axios.all(requests).then(() => {});
 };
 

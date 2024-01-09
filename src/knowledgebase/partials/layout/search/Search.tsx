@@ -13,7 +13,6 @@ const Search: FC = () => {
   const element = useRef<HTMLDivElement | null>(null)
   const wrapperElement = useRef<HTMLDivElement | null>(null)
   const resultsElement = useRef<HTMLDivElement | null>(null)
-  console.log("resultsElement", resultsElement)
   const suggestionsElement = useRef<HTMLDivElement | null>(null)
   const emptyElement = useRef<HTMLDivElement | null>(null)
 

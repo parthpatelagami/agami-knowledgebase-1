@@ -311,26 +311,6 @@ const SignInMethod: React.FC = () => {
             </div>
           </div>
 
-          <div className='notice d-flex bg-light-primary rounded border-primary border border-dashed p-6'>
-            <KTIcon iconName='shield-tick' className='fs-2tx text-primary me-4' />
-            <div className='d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap'>
-              <div className='mb-3 mb-md-0 fw-bold'>
-                <h4 className='text-gray-800 fw-bolder'>Secure Your Account</h4>
-                <div className='fs-6 text-gray-600 pe-7'>
-                  Two-factor authentication adds an extra layer of security to your account. To log
-                  in, in addition you'll need to provide a 6 digit code
-                </div>
-              </div>
-              <a
-                href='#'
-                className='btn btn-primary px-6 align-self-center text-nowrap'
-                data-bs-toggle='modal'
-                data-bs-target='#kt_modal_two_factor_authentication'
-              >
-                Enable
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>

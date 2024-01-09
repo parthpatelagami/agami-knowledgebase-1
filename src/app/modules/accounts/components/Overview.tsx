@@ -33,14 +33,6 @@ export function Overview() {
           </div>
 
           <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>Company</label>
-
-            <div className='col-lg-8 fv-row'>
-              <span className='fw-bold fs-6'>Keenthemes</span>
-            </div>
-          </div>
-
-          <div className='row mb-7'>
             <label className='col-lg-4 fw-bold text-muted'>
               Contact Phone
               <i
@@ -56,32 +48,7 @@ export function Overview() {
               <span className='badge badge-success'>Verified</span>
             </div>
           </div>
-
-          <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>Company Site</label>
-
-            <div className='col-lg-8'>
-              <a href='#' className='fw-bold fs-6 text-gray-900 text-hover-primary'>
-                keenthemes.com
-              </a>
-            </div>
-          </div>
-
-          <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>
-              Country
-              <i
-                className='fas fa-exclamation-circle ms-1 fs-7'
-                data-bs-toggle='tooltip'
-                title='Country of origination'
-              ></i>
-            </label>
-
-            <div className='col-lg-8'>
-              <span className='fw-bolder fs-6 text-gray-900'>Germany</span>
-            </div>
-          </div>
-
+    
           <div className='row mb-7'>
             <label className='col-lg-4 fw-bold text-muted'>Communication</label>
 
@@ -119,21 +86,21 @@ export function Overview() {
 
       <div className='row gy-10 gx-xl-10'>
         <div className='col-xl-6'>
-          <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10' />
+          {/* <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10' /> */}
         </div>
 
         <div className='col-xl-6'>
-          <TablesWidget1 className='card-xxl-stretch mb-5 mb-xl-10' />
+          {/* <TablesWidget1 className='card-xxl-stretch mb-5 mb-xl-10' /> */}
         </div>
       </div>
 
       <div className='row gy-10 gx-xl-10'>
         <div className='col-xl-6'>
-          <ListsWidget5 className='card-xxl-stretch mb-5 mb-xl-10' />
+          {/* <ListsWidget5 className='card-xxl-stretch mb-5 mb-xl-10' /> */}
         </div>
 
         <div className='col-xl-6'>
-          <TablesWidget5 className='card-xxl-stretch mb-5 mb-xl-10' />
+          {/* <TablesWidget5 className='card-xxl-stretch mb-5 mb-xl-10' /> */}
         </div>
       </div>
     </>
