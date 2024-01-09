@@ -15,7 +15,6 @@ const SidebarPopularQuestions: FC = () => {
       const response = await axios.get(
         `${REACT_APP_API_URL}/knowledgebase/getPopularQuestions/`
       );
-      console.log("WE HERE ", response);
       if (response.status === 200) {
         setQuestionsData(response.data);
       }
