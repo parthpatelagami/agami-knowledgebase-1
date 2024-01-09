@@ -43,6 +43,8 @@ const SidebarPopularQuestions: FC = () => {
           <div>Loading...</div>
         ) : error ? (
           <div>Error: {error}</div>
+        ) : questionsData.length === 0 ? (
+          <div>No records found.</div>
         ) : (
           questionsData.map((questions: any) => (
             <div className='d-flex mb-5' key={questions.questionId.id}>

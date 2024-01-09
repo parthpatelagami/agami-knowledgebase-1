@@ -44,6 +44,8 @@ const SidebarLatestArticles: FC = () => {
           <div>Loading...</div>
         ) : error ? (
           <div>Error: {error}</div>
+        ) : articlesData.length === 0 ? (
+          <div>No records found.</div>
         ) : (
           articlesData.map((article: any) => (
             <div className='d-flex mb-5' key={article.id}>
