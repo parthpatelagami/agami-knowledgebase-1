@@ -48,7 +48,7 @@ const SidebarLatestArticles: FC = () => {
             <div className='d-flex mb-5' key={article.id}>
               <KTIcon iconName='right-square' className='fs-2 mt-0 me-2' />
               <Link
-                to={`/apps/devs/article/${article.id}`}
+                to={`/apps/devs/viewarticle/${article.id}`}
                 className='text-gray-700 text-hover-primary fs-6 fw-bold'
               >
                 {article.title}

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import * as Yup from "yup";
 import clsx from "clsx";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { requestPassword } from "../core/_requests";
 
 const initialValues = {
-  email: "admin@demo.com",
+  email: "",
 };
 
 const forgotPasswordSchema = Yup.object().shape({

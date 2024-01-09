@@ -152,7 +152,7 @@ const AsideDefault: FC = () => {
           {isLoading ? (
             <div>Loading Categories...</div>
           ) : (
-            countsData.category_count.map((category) => (
+            countsData.category_count.map((category: any) => (
               <div className='menu-item' key={category.name}>
                 <NavLink to='/apps/category-management' className='menu-link'>
                   <span className='menu-title'>{category.name}</span>
