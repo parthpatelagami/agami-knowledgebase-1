@@ -12,8 +12,9 @@ const SidebarPopularQuestions: FC = () => {
 
   async function getPopularQuestions() {
     try {
-      const response = await axios.get(
-        `${REACT_APP_API_URL}/knowledgebase/getPopularQuestions/`
+      const response = await axios.post(
+        `${REACT_APP_API_URL}/knowledgebase/getPopularQuestions/`,
+        { limit: 10 }
       );
       if (response.status === 200) {
         setQuestionsData(response.data);
@@ -44,10 +45,10 @@ const SidebarPopularQuestions: FC = () => {
           <div>Error: {error}</div>
         ) : (
           questionsData.map((questions: any) => (
-            <div className='d-flex mb-5' key={questions.id}>
+            <div className='d-flex mb-5' key={questions.questionId.id}>
               <KTIcon iconName='right-square' className='fs-2 mt-0 me-2' />
               <Link
-                to={`/apps/devs/question/${questions.id}`}
+                to={`/apps/devs/question/${questions.questionId.id}`}
                 className='text-gray-700 text-hover-primary fs-6 fw-bold'
               >
                 {questions.questionId.title}

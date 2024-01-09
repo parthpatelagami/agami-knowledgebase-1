@@ -12,8 +12,9 @@ const SidebarLatestArticles: FC = () => {
 
   async function getLatestArticles() {
     try {
-      const response = await axios.get(
-        `${REACT_APP_API_URL}/knowledgebase/getLatestArticles/`
+      const response = await axios.post(
+        `${REACT_APP_API_URL}/knowledgebase/getLatestArticles/`,
+        { limit: 10 }
       );
       if (response.status === 200) {
         setArticlesData(response.data);
